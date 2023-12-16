@@ -1,12 +1,13 @@
 import pygame
 import Level_controle
 import sprite_sheet
+from Globals import *
 
 
 ##PYGAME SETUP
 pygame.mixer.init()
 pygame.font.init()
-screen = pygame.display.set_mode((800,640))
+screen = pygame.display.set_mode((SCREEN_WIDTH,SCREEN_HEIGHT), pygame.SCALED | pygame.FULLSCREEN | pygame.RESIZABLE)
 fps = 60
 clock = pygame.time.Clock()
 back_colour = 9,9,9
@@ -26,9 +27,11 @@ side_bar = pygame.Surface(rect.size)
 K_enter_down = False
 K_alt_down = False
 
+##MAP SETUP
+Map = Level_controle.map("./Maps/Test.tmx", screen)
 
 running = True
-full_screen = False
+full_screen = True
 
 while running:
     clock.tick(fps)
@@ -58,15 +61,17 @@ while running:
         full_screen = not full_screen
         K_alt_down = False
         K_enter_down = False
-        if full_screen: 
-            SCREEN = pygame.display.set_mode((800,640), pygame.SCALED | pygame.FULLSCREEN)
+        if full_screen == False: 
+            screen = pygame.display.set_mode((SCREEN_WIDTH,SCREEN_HEIGHT), pygame.SCALED)
         else:
-            SCREEN = pygame.display.set_mode((800,640))
+            screen = pygame.display.set_mode((SCREEN_WIDTH,SCREEN_HEIGHT), pygame.SCALED | pygame.FULLSCREEN)
 
 
     ##DRAW
     screen.fill(back_colour)
+    Map.draw()
     pygame.display.update()
-        
+
+
 pygame.quit()
 quit()
