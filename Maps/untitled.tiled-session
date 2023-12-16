@@ -17,6 +17,7 @@
             "scaleInEditor": 1
         }
     },
+    "property.type": "bool",
     "recentFiles": [
         "1.tmx",
         "More.tsx",
