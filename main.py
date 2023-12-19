@@ -2,6 +2,7 @@ import pygame
 import Level_controle
 import sprite_sheet
 from Globals import *
+import Player
 
 
 ##PYGAME SETUP
@@ -30,6 +31,9 @@ K_alt_down = False
 ##MAP SETUP
 Map = Level_controle.map("./Maps/Test.tmx", screen)
 
+##PLAYER
+player = Player(screen, Map)
+
 running = True
 full_screen = True
 
@@ -39,7 +43,17 @@ while running:
         if event.type == pygame.QUIT:
             running = False
 
+
         if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_a:
+                ##move left
+                player.Get_movement(-1)
+            elif event.key == pygame.K_d:
+                ##move right
+                player.Get_movement(1)
+            if event.key == pygame.K_SPACE:
+                ##jump
+                pass
 
             ##TO GO FULLSCREEN
             if event.key == pygame.K_RETURN:
@@ -47,7 +61,17 @@ while running:
             if event.key == pygame.K_LALT or event.key == pygame.K_RALT:
                 K_alt_down = True
 
+
         if event.type == pygame.KEYUP:
+            if event.key == pygame.K_a:
+                ##stop moving
+                player.Get_movement(0)
+            elif event.key == pygame.K_d:
+                ##stop moving
+                player.Get_movement(0)
+            if event.key == pygame.K_SPACE:
+                ##stop jumping
+                pass
 
             ##TO GO FULLSCREEN
             if event.key == pygame.K_RETURN:

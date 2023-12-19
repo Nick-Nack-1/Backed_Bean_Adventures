@@ -1,0 +1,6 @@
+PLAYER MOVEMENT
+add move distance to player_map_pos
+check for tile colisions
+add move distance to player_screen_pos
+check boundry box colisions
+if yes subtrect move distance (cancel out) and add to map offset

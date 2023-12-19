@@ -1,4 +1,5 @@
 import pygame
+import Globals
 
 class read_out():
 	def __init__(self, file_name):
@@ -16,19 +17,41 @@ class read_out():
 
 
 class animate():
-	def __init__(self,scr):
-		# super(animate, self).__init__()
+	def __init__(self, images_per_row, image_count):
+		self.total_images = image_count
+		self.images_p_row = images_per_row
 		self.counter = 0
-		self.screen = scr
-		self.frame_num = 0
+		self.index = 0
+		self.Speed = 0
 		self.sheet = None
+		self.image_list = []
+		self.y = 0
+		self.images_done = 0
+		self.Reader = None
 
 
 	def Set_sheet(self, S_sheet):
-		self.sheet = pygame.image.load(S_sheet).convert_alpha
-#		self.counter = 0
-#		self.frame_num = 0
+		self.Reader = read_out(S_sheet)
+		if not self.images_done == self.total_images:
+			for x in range(self.images_p_row):
+				print(x)
+				rect = [(x*16,self.y*16),(Globals.TILE_SIZE,Globals.TILE_SIZE)]
+				self.image_list.append(self.Reader.Get_img([(x*16,self.y*16),(Globals.TILE_SIZE,Globals.TILE_SIZE)]))
+				self.images_done +=1
+			self.y +=1
 
 
-	def Play(self,pos):
-		pass
+	def Set_speed(self, speed):
+		self.Speed = speed
+
+
+	def Play(self):
+		print(len(self.image_list))
+		self.counter +=1
+		if (self.counter-1) % self.Speed == 0:
+			self.index += 1
+			if self.index == self.total_images-1:
+				self.index = 1
+			
+			return self.image_list[self.index-1]
+			
