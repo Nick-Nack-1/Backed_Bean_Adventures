@@ -7,7 +7,7 @@ class read_out():
 	
 	
 	def Get_img(self,rectangle):
-		# rectangle = [(img_top_left_pos),(img_size_x,img_size_y)]
+		## rectangle = [(img_top_left_pos),(img_size_x,img_size_y)]
 		rect = pygame.Rect(rectangle)
 		image = pygame.Surface(rect.size)
 		image.blit(self.main_sheet, (0,0), rect)
@@ -34,8 +34,7 @@ class animate():
 		self.Reader = read_out(S_sheet)
 		if not self.images_done == self.total_images:
 			for x in range(self.images_p_row):
-				print(x)
-				rect = [(x*16,self.y*16),(Globals.TILE_SIZE,Globals.TILE_SIZE)]
+				# print(x)
 				self.image_list.append(self.Reader.Get_img([(x*16,self.y*16),(Globals.TILE_SIZE,Globals.TILE_SIZE)]))
 				self.images_done +=1
 			self.y +=1
@@ -46,11 +45,12 @@ class animate():
 
 
 	def Play(self):
-		print(len(self.image_list))
+		# print(len(self.image_list))
+		# print(self.total_images)
 		self.counter +=1
 		if (self.counter-1) % self.Speed == 0:
 			self.index += 1
-			if self.index == self.total_images-1:
+			if self.index == self.total_images+1:
 				self.index = 1
 			
 			return self.image_list[self.index-1]

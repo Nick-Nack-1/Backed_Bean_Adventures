@@ -32,10 +32,16 @@ K_alt_down = False
 Map = Level_controle.map("./Maps/Test.tmx", screen)
 
 ##PLAYER
-player = Player(screen, Map)
+player = Player.Player(screen, Map)
 
 running = True
 full_screen = True
+
+##GROUPS
+S_Draw = pygame.sprite.Group()
+S_Update = pygame.sprite.Group()
+S_Draw.add(player)
+S_Update.add(player)
 
 while running:
     clock.tick(fps)
@@ -91,9 +97,13 @@ while running:
             screen = pygame.display.set_mode((SCREEN_WIDTH,SCREEN_HEIGHT), pygame.SCALED | pygame.FULLSCREEN)
 
 
+    ##UPDATE
+    S_Update.update()
+
     ##DRAW
     screen.fill(back_colour)
     Map.draw()
+    S_Draw.draw(screen)
     pygame.display.update()
 
 
