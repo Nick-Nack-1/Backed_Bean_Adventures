@@ -31,6 +31,9 @@ class animate():
 
 
 	def Set_sheet(self, S_sheet):
+		##Here it reads out all the images in the sprite sheet and puths them all in a list
+		##Each time it gets to the end of a row(x) it adds 1 to the y
+		##It will stop when the images done = the total images
 		self.Reader = read_out(S_sheet)
 		if not self.images_done == self.total_images:
 			for x in range(self.images_p_row):
@@ -45,8 +48,7 @@ class animate():
 
 
 	def Play(self):
-		# print(len(self.image_list))
-		# print(self.total_images)
+		##Each time Play is called it just returns the next image in the list
 		self.counter +=1
 		if (self.counter-1) % self.Speed == 0:
 			self.index += 1

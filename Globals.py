@@ -9,10 +9,12 @@ DEFAULT_TEXTURE = "./Images/default_texture.png"
 
 
 #PlLAYER
-speed = 2  #(Pixels)
+speed = 1  #(Pixels)
+FALL_SPEED = 2
 STANDING = 0
 RUNNING = 1
 JUMPING = 2
+JUMPDURATION = 60 #Frames
 
 
 

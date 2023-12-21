@@ -59,7 +59,7 @@ while running:
                 player.Get_movement(1)
             if event.key == pygame.K_SPACE:
                 ##jump
-                pass
+                player.Is_Jumping(True)
 
             ##TO GO FULLSCREEN
             if event.key == pygame.K_RETURN:
@@ -78,6 +78,7 @@ while running:
             if event.key == pygame.K_SPACE:
                 ##stop jumping
                 pass
+                # player.Is_Jumping(False)
 
             ##TO GO FULLSCREEN
             if event.key == pygame.K_RETURN:
