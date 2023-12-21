@@ -3,6 +3,7 @@ import Level_controle
 import sprite_sheet
 from Globals import *
 import Player
+import Cycle_timer
 
 
 ##PYGAME SETUP
