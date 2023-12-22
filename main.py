@@ -30,19 +30,24 @@ K_enter_down = False
 K_alt_down = False
 
 ##MAP SETUP
-Map = Level_controle.map("./Maps/Test.tmx", screen)
+Map = Level_controle.map("./Maps/Jump_tyester.tmx", screen)
+# Map = Level_controle.map("./Maps/Test.tmx", screen)
 
 ##PLAYER
 player = Player.Player(screen, Map)
 
 running = True
 full_screen = True
+##DO CYCLE TIMER
+do_timer = False
 
 ##GROUPS
 S_Draw = pygame.sprite.Group()
 S_Update = pygame.sprite.Group()
 S_Draw.add(player)
 S_Update.add(player)
+
+timer = Cycle_timer.timer()
 
 while running:
     clock.tick(fps)
@@ -67,6 +72,10 @@ while running:
                 K_enter_down = True
             if event.key == pygame.K_LALT or event.key == pygame.K_RALT:
                 K_alt_down = True
+            
+            ##TOGGLE CYCLE TIMER
+            if event.key == pygame.K_F1:
+                do_timer = not do_timer
 
 
         if event.type == pygame.KEYUP:
@@ -101,12 +110,19 @@ while running:
 
     ##UPDATE
     S_Update.update()
+    if player.Is_dead():
+        ##ADD DEATHSCREEN LATER
+        running = False
 
     ##DRAW
     screen.fill(back_colour)
     Map.draw()
     S_Draw.draw(screen)
     pygame.display.update()
+
+    ##CYCLE COUNTER
+    if do_timer:
+        timer.stop()
 
 
 pygame.quit()

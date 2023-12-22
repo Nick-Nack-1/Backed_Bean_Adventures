@@ -12,8 +12,8 @@ class Player(pygame.sprite.Sprite):
         self.image = pygame.image.load(DEFAULT_TEXTURE).convert_alpha()
         self.rect = self.image.get_rect()
         self.spawn_point = map.tmxdata.get_object_by_name("Spawn_plr")
-        self.map_x = 100
-        self.map_y = 16
+        self.map_x = self.spawn_point.x
+        self.map_y = self.spawn_point.y
         self.screen_x = 0
         self.screen_y = 0
         self.state = STANDING
@@ -23,6 +23,8 @@ class Player(pygame.sprite.Sprite):
         self.movement_dir = 0
         self.screen = scrn
         self.map = map
+        self.dead = False
+        self.collide_box = (6, TILE_SIZE) #This will be used to test tile collisions
     ##ANIMATIONS
         self.stand_animate = sprite_sheet.animate(4, 4)
         self.stand_animate.Set_sheet("./Images/player_standing.png")
@@ -36,7 +38,7 @@ class Player(pygame.sprite.Sprite):
     def update(self):
         ##MOVEMENT
         self.map_x += self.movement_dir*speed
-        Collisions = self.map.Check_Collisions((self.map_x+5,self.map_y), (6, TILE_SIZE-1))
+        Collisions = self.map.Check_Collisions((self.map_x+5,self.map_y), (self.collide_box[0],self.collide_box[1]-1))
         if "TR" in Collisions or "BR" in Collisions:
             self.map_x = ((self.map_x//TILE_SIZE)*TILE_SIZE)+5
         if "TL" in Collisions or "BL" in Collisions:
@@ -47,7 +49,7 @@ class Player(pygame.sprite.Sprite):
             self.jump_timer += 1
             y = -(48/900)*(self.jump_timer-(JUMPDURATION//2))**2+48
             self.map_y = self.jump_y_start-y
-            Collisions = self.map.Check_Collisions((self.map_x+5,self.map_y), (6, TILE_SIZE))
+            Collisions = self.map.Check_Collisions((self.map_x+5,self.map_y), self.collide_box)
             if "TL" in Collisions or "TR" in Collisions:
                     self.map_y = ((self.map_y+15)//TILE_SIZE)*TILE_SIZE
                     self.state = RUNNING
@@ -63,11 +65,10 @@ class Player(pygame.sprite.Sprite):
 
         ##GRAVITY
         if self.state != JUMPING:
-            Collisions = self.map.Check_Collisions((self.map_x+5,self.map_y), (6, TILE_SIZE))
+            Collisions = self.map.Check_Collisions((self.map_x+5,self.map_y), self.collide_box)
             if not("BL" in Collisions or "BR" in Collisions):
                 self.map_y += FALL_SPEED
             else:
-                print("hi")
                 self.map_y = (self.map_y//TILE_SIZE)*TILE_SIZE
 
         ##Updates the screen pos
@@ -83,7 +84,6 @@ class Player(pygame.sprite.Sprite):
         if self.state == STANDING:
             picture = self.stand_animate.Play()
             if picture != None:
-#                print(picture)
                 self.image = picture
         if self.state in [RUNNING, JUMPING]:
             picture = self.run_animation.Play()
@@ -92,13 +92,12 @@ class Player(pygame.sprite.Sprite):
                     self.image = pygame.transform.flip(picture, True, False)
                 else:
                     self.image = picture
-            # self.rect = self.image.get_rect()
     
     def Is_Jumping(self, is_jumping):
         if is_jumping:
-            Collisions = self.map.Check_Collisions((self.map_x+5,self.map_y), (6, TILE_SIZE))
+            Collisions = self.map.Check_Collisions((self.map_x+5,self.map_y), self.collide_box)
             if "BL" in Collisions or "BR" in Collisions:
-        # if is_jumping and not self.map.Chack_falling((self.map_x+5,self.map_y), (6, TILE_SIZE)):
+        ## if is_jumping and not self.map.Chack_falling((self.map_x+5,self.map_y), (6, TILE_SIZE)):
                 self.state = JUMPING
                 self.jump_timer = 0
                 self.jump_y_start = self.map_y
@@ -111,3 +110,17 @@ class Player(pygame.sprite.Sprite):
             ##-1 = move left
             ## 0 = stand still
             ## 1 = move right
+    
+    def Is_dead(self):
+        test_tiles = self.map.Test_tile(DANGER, 
+                                        (self.map_x,self.map_y), 
+                                        (self.collide_box[0], self.collide_box[1]-1))
+        if len(test_tiles) != 0:
+            for T in test_tiles:
+                if "Will_kill" in T:
+                    if T["Will_kill"]:
+                        ##If it will kill the player.
+                        print("You dead")
+                        return True
+        return False
+    
