@@ -25,7 +25,7 @@
                 4
             ],
             "scale": 2,
-            "selectedLayer": 4,
+            "selectedLayer": 2,
             "viewCenter": {
                 "x": 360.5,
                 "y": 109.5
@@ -58,6 +58,7 @@
             }
         }
     },
+    "last.imagePath": "C:/Users/nlste/Downloads",
     "map.height": 40,
     "map.lastUsedFormat": "tmx",
     "map.tileHeight": 16,
@@ -75,5 +76,10 @@
         "More.tsx",
         "Test.tmx",
         "1.tmx"
-    ]
+    ],
+    "tileset.lastUsedFormat": "tsx",
+    "tileset.tileSize": {
+        "height": 16,
+        "width": 16
+    }
 }
