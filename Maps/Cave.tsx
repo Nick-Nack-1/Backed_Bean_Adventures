@@ -56,6 +56,22 @@
    <property name="Will_kill" type="bool" value="true"/>
   </properties>
  </tile>
+ <tile id="61">
+  <animation>
+   <frame tileid="96" duration="100"/>
+   <frame tileid="97" duration="100"/>
+   <frame tileid="98" duration="100"/>
+   <frame tileid="99" duration="100"/>
+   <frame tileid="100" duration="100"/>
+   <frame tileid="101" duration="100"/>
+   <frame tileid="102" duration="100"/>
+   <frame tileid="103" duration="100"/>
+   <frame tileid="104" duration="100"/>
+   <frame tileid="105" duration="100"/>
+   <frame tileid="106" duration="100"/>
+   <frame tileid="107" duration="100"/>
+  </animation>
+ </tile>
  <tile id="62">
   <properties>
    <property name="Will_kill" type="bool" value="true"/>

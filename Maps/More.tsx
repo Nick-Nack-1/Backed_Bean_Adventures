@@ -5,6 +5,9 @@
   <properties>
    <property name="Will_kill" type="bool" value="true"/>
   </properties>
+  <objectgroup draworder="index" id="2">
+   <object id="1" x="1.02073" y="4.97608" width="14.0351" height="10.9304"/>
+  </objectgroup>
  </tile>
  <tile id="1">
   <properties>

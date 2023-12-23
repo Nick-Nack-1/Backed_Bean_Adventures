@@ -54,6 +54,7 @@ class animate():
 			self.index += 1
 			if self.index == self.total_images+1:
 				self.index = 1
+				return [self.image_list[self.index-1], True]
 			
-			return self.image_list[self.index-1]
+			return [self.image_list[self.index-1], False]
 			

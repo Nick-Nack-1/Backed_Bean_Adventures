@@ -30,8 +30,8 @@ K_enter_down = False
 K_alt_down = False
 
 ##MAP SETUP
-Map = Level_controle.map("./Maps/Jump_tyester.tmx", screen)
-# Map = Level_controle.map("./Maps/Test.tmx", screen)
+# Map = Level_controle.map("./Maps/Jump_tyester.tmx", screen) 
+Map = Level_controle.map("./Maps/Test.tmx", screen)
 
 ##PLAYER
 player = Player.Player(screen, Map)
@@ -117,7 +117,8 @@ while running:
     ##DRAW
     screen.fill(back_colour)
     Map.draw()
-    S_Draw.draw(screen)
+    if running:
+        S_Draw.draw(screen)
     pygame.display.update()
 
     ##CYCLE COUNTER
