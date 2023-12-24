@@ -6,11 +6,19 @@ class map():
     def __init__(self, map_file, scn):
         self.screen = scn
         self.tmxdata = pytmx.load_pygame(map_file)
-        self.map_file = map_file
+        # tl = self.tmxdata.get_tile_properties(1, 1, 4)
+        # print(tl["frames"])
+        # print(dir(tl["frames"][0]))
+        # self.map_file = map_file
         #This is the pixel offset between the map origen(top-left) and the screen origen(0,0)
         self.offset_x = 0
         self.offset_y = 0
         self.back_tint = self.tmxdata.get_layer_by_name("Background").tintcolor
+
+        ##ANIMATION INDEX
+        self.fire_index = 0
+        self.fire_time = 0 #This is the time between frames for the fire animation
+        self.counter = 0 #Frame counter
 
     
 
@@ -57,6 +65,20 @@ class map():
                     self.screen.blit(tile_image, 
                                      (x*TILE_SIZE-(self.offset_x%TILE_SIZE), 
                                       y*TILE_SIZE-(self.offset_y%TILE_SIZE)))
+                
+                ##ANIMATED TILES
+                tile_proprerties = self.tmxdata.get_tile_properties(x+self.offset_x//TILE_SIZE,
+                                                                      y+self.offset_y//TILE_SIZE,
+                                                                      ANIMATION_LAYER)
+                if tile_proprerties != None:
+                    if tile_proprerties["type"] == "fire":
+                        if self.counter % tile_proprerties["frames"][self.fire_index].duration == 0:
+                            self.fire_index = (self.fire_index+1)%len(tile_proprerties["frames"])
+                        tile_image = self.tmxdata.get_tile_image_by_gid(tile_proprerties["frames"][self.fire_index].gid)
+                    self.screen.blit(tile_image, 
+                                     (x*TILE_SIZE-(self.offset_x%TILE_SIZE), 
+                                      y*TILE_SIZE-(self.offset_y%TILE_SIZE)))
+        self.counter += 1
                
 
     def Calculate_screen_pos(self, sprite_pos):
