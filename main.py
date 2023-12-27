@@ -4,12 +4,12 @@ import sprite_sheet
 from Globals import *
 import Player
 import Cycle_timer
-
+import time
 
 ##PYGAME SETUP
 pygame.mixer.init()
 pygame.font.init()
-screen = pygame.display.set_mode((SCREEN_WIDTH,SCREEN_HEIGHT), pygame.SCALED | pygame.FULLSCREEN | pygame.RESIZABLE, vsync=1)
+screen = pygame.display.set_mode((SCREEN_WIDTH,SCREEN_HEIGHT), pygame.SCALED | pygame.FULLSCREEN | pygame.RESIZABLE)
 fps = 60
 clock = pygame.time.Clock()
 back_colour = 9,9,9
@@ -30,7 +30,7 @@ K_enter_down = False
 K_alt_down = False
 
 ##MAP SETUP
-Map = Level_controle.map("./Maps/Debug_map.tmx", screen) 
+Map = Level_controle.map(1, screen) 
 # Map = Level_controle.map("./Maps/Test.tmx", screen)
 
 ##PLAYER
@@ -47,10 +47,15 @@ S_Update = pygame.sprite.Group()
 S_Draw.add(player)
 S_Update.add(player)
 
-timer = Cycle_timer.timer(screen)
 
+def Reset(): #to reset the level
+    pass
+
+timer = Cycle_timer.timer(screen)
+frm_cnt = 0
+t_avg = 0
 while running:
-#    clock.tick(fps)
+    clock.tick(fps)
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
@@ -111,6 +116,7 @@ while running:
             screen = pygame.display.set_mode((SCREEN_WIDTH,SCREEN_HEIGHT), pygame.SCALED | pygame.FULLSCREEN)
 
 
+    t0 = time.perf_counter()
     ##UPDATE
     S_Update.update()
     if player.Is_dead():
@@ -118,16 +124,28 @@ while running:
         running = False
 
     ##DRAW
+        
+    t1 = time.perf_counter()
     screen.fill(back_colour)
+    t2 = time.perf_counter()
     Map.draw()
+    t3 = time.perf_counter()
     if running:
         S_Draw.draw(screen)
+    t4 = time.perf_counter()
     ##CYCLE COUNTER
     if do_timer:
         timer.stop()
-#    pygame.display.update()
-    pygame.display.flip()
-    
+    pygame.display.update()
+    # pygame.display.flip()
+    t5 = time.perf_counter()    
+
+    t_avg += (t3-t2)
+    frm_cnt += 1
+    if frm_cnt % 60 == 0:
+        frm_cnt = 0
+        print(f"{t1-t0:.4f}, {t2-t1:.4f}, {t_avg/60:.4f}, {t4-t3:.4f}, {t5-t4:.4f}")
+        t_avg = 0
 
 
 pygame.quit()

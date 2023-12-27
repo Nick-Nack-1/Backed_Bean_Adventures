@@ -3,9 +3,10 @@ from Globals import *
 
 
 class map():
-    def __init__(self, map_file, scn):
+    def __init__(self, map_nom, scn):
         self.screen = scn
-        self.tmxdata = pytmx.load_pygame(map_file)
+        self.all_maps = ["./Maps/Test.tmx", "./Maps/Test1.tmx", "./Maps/Test2.tmx", "./Maps/Debug_map.tmx"]
+        self.tmxdata = pytmx.load_pygame(self.all_maps[map_nom]) #map_nom is for which map to play
         #This is the pixel offset between the map origen(top-left) and the screen origen(0,0)
         self.offset_x = 0
         self.offset_y = 0
@@ -27,9 +28,11 @@ class map():
     def draw(self):
         for y in range (20):
             for x in range (30):
+                tile_x = x+self.offset_x//TILE_SIZE
+                tile_y = y+self.offset_y//TILE_SIZE
                 ##BACKGROUND
-                tile_image = self.tmxdata.get_tile_image(x+self.offset_x//TILE_SIZE,
-                                                         y+self.offset_y//TILE_SIZE,
+                tile_image = self.tmxdata.get_tile_image(tile_x,
+                                                         tile_y,
                                                          BACKGROUND)
                 if tile_image != None:
                     ##If the Background tint clour isn't black then it gets a gray tint
@@ -42,8 +45,8 @@ class map():
                     tile_image.set_alpha(255)
                 
                 ##MID GROUND
-                tile_image = self.tmxdata.get_tile_image(x+self.offset_x//TILE_SIZE,
-                                                         y+self.offset_y//TILE_SIZE,
+                tile_image = self.tmxdata.get_tile_image(tile_x,
+                                                         tile_y,
                                                          MIDGROUND)
                 if tile_image != None:
                     self.screen.blit(tile_image, 
@@ -51,8 +54,8 @@ class map():
                                       y*TILE_SIZE-(self.offset_y%TILE_SIZE)))
 
                 ##DANGER TILES           
-                tile_image = self.tmxdata.get_tile_image(x+self.offset_x//TILE_SIZE,
-                                                         y+self.offset_y//TILE_SIZE,
+                tile_image = self.tmxdata.get_tile_image(tile_x,
+                                                         tile_y,
                                                          DANGER)
                 if tile_image != None:
                     self.screen.blit(tile_image, 
@@ -60,8 +63,8 @@ class map():
                                       y*TILE_SIZE-(self.offset_y%TILE_SIZE)))
 
                 ##PLATEFORMS            
-                tile_image = self.tmxdata.get_tile_image(x+self.offset_x//TILE_SIZE,
-                                                         y+self.offset_y//TILE_SIZE,
+                tile_image = self.tmxdata.get_tile_image(tile_x,
+                                                         tile_y,
                                                          PLAYGROUND)
                 if tile_image != None:
                     self.screen.blit(tile_image, 
@@ -69,9 +72,9 @@ class map():
                                       y*TILE_SIZE-(self.offset_y%TILE_SIZE)))
                 
                 ##ANIMATED TILES
-                tile_proprerties = self.tmxdata.get_tile_properties(x+self.offset_x//TILE_SIZE,
-                                                                      y+self.offset_y//TILE_SIZE,
-                                                                      ANIMATION_LAYER)
+                tile_proprerties = self.tmxdata.get_tile_properties(tile_x,
+                                                                    tile_y,
+                                                                    ANIMATION_LAYER)
                 #Flames
                 if tile_proprerties != None:
                     if tile_proprerties["type"] == "fire":
@@ -85,9 +88,9 @@ class map():
                         
                 ##INTERACTIBLE ANIMATIONS - stuff like doors and levers
                 #Doors
-                tile_proprerties = self.tmxdata.get_tile_properties(x+self.offset_x//TILE_SIZE,
-                                                                y+self.offset_y//TILE_SIZE,
-                                                                PLAYGROUND)
+                tile_proprerties = self.tmxdata.get_tile_properties(tile_x,
+                                                                    tile_y,
+                                                                    PLAYGROUND)
                 for d in self.door_types:
                     if tile_proprerties != None:
                         if "type" in tile_proprerties:
@@ -101,22 +104,22 @@ class map():
                                                     (x*TILE_SIZE-(self.offset_x%TILE_SIZE), 
                                                     y*TILE_SIZE-(self.offset_y%TILE_SIZE)))
                 
-                #Levers
-                tile_proprerties = self.tmxdata.get_tile_properties(x+self.offset_x//TILE_SIZE,
-                                                                y+self.offset_y//TILE_SIZE,
-                                                                INTERACTABLES)
-                for l in self.lever_types:
-                    if tile_proprerties != None:
-                        if "type" in tile_proprerties:
-                            if tile_proprerties["type"] == l:
-                                if tile_proprerties["On"]:
-                                    interact_image = self.tmxdata.get_tile_image_by_gid(tile_proprerties["frames"][1].gid)
-                                else:
-                                    interact_image = self.tmxdata.get_tile_image_by_gid(tile_proprerties["frames"][0].gid)
-                                if interact_image != None:
-                                    self.screen.blit(interact_image,
-                                                    (x*TILE_SIZE-(self.offset_x%TILE_SIZE), 
-                                                    y*TILE_SIZE-(self.offset_y%TILE_SIZE)))
+                # #Levers
+                # tile_proprerties = self.tmxdata.get_tile_properties(tile_x,
+                #                                                     tile_y,
+                #                                                     INTERACTABLES)
+                # for l in self.lever_types:
+                #     if tile_proprerties != None:
+                #         if "type" in tile_proprerties:
+                #             if tile_proprerties["type"] == l:
+                #                 if tile_proprerties["On"]:
+                #                     interact_image = self.tmxdata.get_tile_image_by_gid(tile_proprerties["frames"][1].gid)
+                #                 else:
+                #                     interact_image = self.tmxdata.get_tile_image_by_gid(tile_proprerties["frames"][0].gid)
+                #                 if interact_image != None:
+                #                     self.screen.blit(interact_image,
+                #                                     (x*TILE_SIZE-(self.offset_x%TILE_SIZE), 
+                #                                     y*TILE_SIZE-(self.offset_y%TILE_SIZE)))
                                 
         self.counter += 1
                
@@ -146,28 +149,28 @@ class map():
         tile = self.tmxdata.get_tile_image(TL[0], TL[1], PLAYGROUND)
         tile_prop = self.tmxdata.get_tile_properties(TL[0], TL[1], PLAYGROUND) #tile_prop = tile properties
         if tile != None:
-            if not "Open" in tile_prop or not tile_prop["Open"]: #if the tile doesnt have the open propertie or the propertie is not true
+            if tile_prop == None or not "Open" in tile_prop or not tile_prop["Open"]: #if the tile doesnt have the open propertie or the propertie is not true
                 all_colide_corners.append("TL")
 
         ##CHECK TOP RIGHT CORNER
         tile = self.tmxdata.get_tile_image(TR[0], TR[1], PLAYGROUND)
         tile_prop = self.tmxdata.get_tile_properties(TR[0], TR[1], PLAYGROUND) #tile_prop = tile properties
         if tile != None:
-            if not "Open" in tile_prop or not tile_prop["Open"]: #if the tile doesnt have the open propertie or the propertie is not true
+            if tile_prop == None or not "Open" in tile_prop or not tile_prop["Open"]: #if the tile doesnt have the open propertie or the propertie is not true
                 all_colide_corners.append("TR")
         
         ##CHECK BOTTOM LEFT CORNER
         tile = self.tmxdata.get_tile_image(BL[0], BL[1], PLAYGROUND)
         tile_prop = self.tmxdata.get_tile_properties(BL[0], BL[1], PLAYGROUND) #tile_prop = tile properties
         if tile != None:
-            if not "Open" in tile_prop or not tile_prop["Open"]: #if the tile doesnt have the open propertie or the propertie is not true
+            if tile_prop == None or not "Open" in tile_prop or not tile_prop["Open"]: #if the tile doesnt have the open propertie or the propertie is not true
                 all_colide_corners.append("BL")
 
         ##CHECK BOTTOM RIGHT CORNER
         tile = self.tmxdata.get_tile_image(BR[0], BR[1], PLAYGROUND)
         tile_prop = self.tmxdata.get_tile_properties(BR[0], BR[1], PLAYGROUND) #tile_prop = tile properties
         if tile != None:
-            if not "Open" in tile_prop or not tile_prop["Open"]: #if the tile doesnt have the open propertie or the propertie is not true
+            if tile_prop == None or not "Open" in tile_prop or not tile_prop["Open"]: #if the tile doesnt have the open propertie or the propertie is not true
                 all_colide_corners.append("BR")
         
         return all_colide_corners

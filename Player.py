@@ -41,7 +41,7 @@ class Player(pygame.sprite.Sprite):
 
     def update(self):
         if self.state != DEAD:
-            print(self.state)
+            # print(self.state)
             ##MOVEMENT
             self.map_x += self.movement_dir*speed
             Collisions = self.map.Check_Collisions((self.map_x+5,self.map_y), (self.collide_box[0],self.collide_box[1]-1))

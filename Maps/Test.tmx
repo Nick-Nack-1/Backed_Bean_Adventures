@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="30" height="20" tilewidth="16" tileheight="16" infinite="0" nextlayerid="8" nextobjectid="4">
+<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="30" height="20" tilewidth="16" tileheight="16" infinite="0" nextlayerid="8" nextobjectid="5">
  <tileset firstgid="1" source="Cave.tsx"/>
  <tileset firstgid="129" source="More.tsx"/>
  <tileset firstgid="729" source="Flames.tsx"/>
  <tileset firstgid="734" source="Doors.tsx"/>
  <objectgroup id="5" name="Player_stuff">
-  <object id="1" template="Spawn_plr.tx" x="19.0058" y="282.047"/>
   <object id="2" template="plr_End.tx" x="406.125" y="184.125"/>
+  <object id="4" name="Spawn_plr" x="17.3333" y="284">
+   <point/>
+  </object>
  </objectgroup>
  <layer id="2" name="Background" width="30" height="20" locked="1" tintcolor="#565656">
   <data encoding="csv">
