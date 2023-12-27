@@ -168,7 +168,7 @@
    <property name="Will_kill" type="bool" value="true"/>
   </properties>
  </tile>
- <tile id="80" type="fire">
+ <tile id="80" type="coin">
   <animation>
    <frame tileid="80" duration="6"/>
    <frame tileid="81" duration="6"/>
@@ -181,6 +181,43 @@
    <frame tileid="89" duration="6"/>
    <frame tileid="90" duration="6"/>
    <frame tileid="91" duration="6"/>
+  </animation>
+ </tile>
+ <tile id="86">
+  <properties>
+   <property name="Can_Intract" type="bool" value="true"/>
+  </properties>
+ </tile>
+ <tile id="96" type="key">
+  <animation>
+   <frame tileid="96" duration="6"/>
+   <frame tileid="97" duration="6"/>
+   <frame tileid="98" duration="6"/>
+   <frame tileid="99" duration="6"/>
+   <frame tileid="100" duration="6"/>
+   <frame tileid="101" duration="6"/>
+   <frame tileid="102" duration="6"/>
+   <frame tileid="103" duration="6"/>
+   <frame tileid="104" duration="6"/>
+   <frame tileid="105" duration="6"/>
+   <frame tileid="106" duration="6"/>
+   <frame tileid="107" duration="6"/>
+  </animation>
+ </tile>
+ <tile id="112" type="diamond">
+  <animation>
+   <frame tileid="112" duration="6"/>
+   <frame tileid="113" duration="6"/>
+   <frame tileid="114" duration="6"/>
+   <frame tileid="115" duration="6"/>
+   <frame tileid="116" duration="6"/>
+   <frame tileid="117" duration="6"/>
+   <frame tileid="118" duration="6"/>
+   <frame tileid="119" duration="6"/>
+   <frame tileid="120" duration="6"/>
+   <frame tileid="121" duration="6"/>
+   <frame tileid="122" duration="6"/>
+   <frame tileid="123" duration="6"/>
   </animation>
  </tile>
  <wangsets>

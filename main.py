@@ -9,7 +9,7 @@ import Cycle_timer
 ##PYGAME SETUP
 pygame.mixer.init()
 pygame.font.init()
-screen = pygame.display.set_mode((SCREEN_WIDTH,SCREEN_HEIGHT), pygame.SCALED | pygame.FULLSCREEN | pygame.RESIZABLE)
+screen = pygame.display.set_mode((SCREEN_WIDTH,SCREEN_HEIGHT), pygame.SCALED | pygame.FULLSCREEN | pygame.RESIZABLE, vsync=1)
 fps = 60
 clock = pygame.time.Clock()
 back_colour = 9,9,9
@@ -30,8 +30,8 @@ K_enter_down = False
 K_alt_down = False
 
 ##MAP SETUP
-# Map = Level_controle.map("./Maps/Jump_tyester.tmx", screen) 
-Map = Level_controle.map("./Maps/Test.tmx", screen)
+Map = Level_controle.map("./Maps/Debug_map.tmx", screen) 
+# Map = Level_controle.map("./Maps/Test.tmx", screen)
 
 ##PLAYER
 player = Player.Player(screen, Map)
@@ -47,10 +47,10 @@ S_Update = pygame.sprite.Group()
 S_Draw.add(player)
 S_Update.add(player)
 
-timer = Cycle_timer.timer()
+timer = Cycle_timer.timer(screen)
 
 while running:
-    clock.tick(fps)
+#    clock.tick(fps)
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
@@ -66,6 +66,9 @@ while running:
             if event.key == pygame.K_SPACE:
                 ##jump
                 player.Is_Jumping(True)
+            
+            if event.key == pygame.K_e:
+                player.Interact()
 
             ##TO GO FULLSCREEN
             if event.key == pygame.K_RETURN:
@@ -74,7 +77,7 @@ while running:
                 K_alt_down = True
             
             ##TOGGLE CYCLE TIMER
-            if event.key == pygame.K_F1:
+            if event.key == pygame.K_F3:
                 do_timer = not do_timer
 
 
@@ -119,11 +122,12 @@ while running:
     Map.draw()
     if running:
         S_Draw.draw(screen)
-    pygame.display.update()
-
     ##CYCLE COUNTER
     if do_timer:
         timer.stop()
+#    pygame.display.update()
+    pygame.display.flip()
+    
 
 
 pygame.quit()

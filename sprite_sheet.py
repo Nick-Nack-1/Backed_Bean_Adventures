@@ -37,7 +37,6 @@ class animate():
 		self.Reader = read_out(S_sheet)
 		if not self.images_done == self.total_images:
 			for x in range(self.images_p_row):
-				# print(x)
 				self.image_list.append(self.Reader.Get_img([(x*16,self.y*16),(Globals.TILE_SIZE,Globals.TILE_SIZE)]))
 				self.images_done +=1
 			self.y +=1

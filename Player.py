@@ -41,11 +41,12 @@ class Player(pygame.sprite.Sprite):
 
     def update(self):
         if self.state != DEAD:
+            print(self.state)
             ##MOVEMENT
             self.map_x += self.movement_dir*speed
             Collisions = self.map.Check_Collisions((self.map_x+5,self.map_y), (self.collide_box[0],self.collide_box[1]-1))
             if "TR" in Collisions or "BR" in Collisions:
-                self.map_x = ((self.map_x//TILE_SIZE)*TILE_SIZE)+5
+                self.map_x = ((self.map_x//TILE_SIZE)*TILE_SIZE)+4
             if "TL" in Collisions or "BL" in Collisions:
                 self.map_x = (((self.map_x+15)//TILE_SIZE)*TILE_SIZE)-5
 
@@ -70,11 +71,14 @@ class Player(pygame.sprite.Sprite):
 
             ##GRAVITY
             if self.state != JUMPING:
-                Collisions = self.map.Check_Collisions((self.map_x+5,self.map_y), self.collide_box)
-                if not("BL" in Collisions or "BR" in Collisions):
-                    self.map_y += FALL_SPEED
-                else:
-                    self.map_y = (self.map_y//TILE_SIZE)*TILE_SIZE
+                Collisions = self.map.Check_Collisions((self.map_x+5,self.map_y), (self.collide_box[0], self.collide_box[1]+1))
+                self.map_y += FALL_SPEED
+                if "BL" in Collisions or "BR" in Collisions:
+                    self.map_y = ((self.map_y//TILE_SIZE)*TILE_SIZE)
+                # if not("BL" in Collisions or "BR" in Collisions):
+                #     self.map_y += FALL_SPEED
+                # else:
+                #     self.map_y = (self.map_y//TILE_SIZE)*TILE_SIZE
 
             ##Updates the screen pos
             self.rect.x,self.rect.y = self.map.Calculate_screen_pos((self.map_x,self.map_y))
@@ -124,6 +128,12 @@ class Player(pygame.sprite.Sprite):
             ##-1 = move left
             ## 0 = stand still
             ## 1 = move right
+    
+
+    def Interact(self):
+        ##This will be called by main
+        self.map.tile_interact((int((self.map_x+TILE_SIZE/2)/TILE_SIZE),int((self.map_y+TILE_SIZE/2)/TILE_SIZE)))
+
     
     def Is_dead(self):
         test_tiles = self.map.Test_tile(DANGER, 
