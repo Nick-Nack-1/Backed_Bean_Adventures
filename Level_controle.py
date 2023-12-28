@@ -19,9 +19,18 @@ class map():
         self.cion_index = 0 
         self.counter = 0 #Frame counter
 
-        ##INTERACT INEMATIONS
+        ##INTERACT STUFF
         self.door_types = ["Red_door", "Green_door", "Blue_door"]
         self.lever_types = ["Red_lever", "Green_lever", "Blue_lever"]
+
+        self.interact_list = [] #This will be a list of all the tiles on the interact layer
+        self.animation_list = [] #This will be a list of all the tiles on the animations layer
+        self.active_tile_list = [] #This will be a list of all the doors and other toggleable stuff
+        self.platform_list = [] #This will be a list of all the tiles on the play_ground layer
+        self.mid_ground_list = [] #This will be a list of all the tiles on the mid_ground layer
+        self.danger_list = [] #This will be a list of all the tiles on the danger layer
+
+        self.convert_map_to_list()
 
     
 
@@ -43,84 +52,66 @@ class map():
                                      (x*TILE_SIZE-(self.offset_x%TILE_SIZE), 
                                       y*TILE_SIZE-(self.offset_y%TILE_SIZE)))
                     tile_image.set_alpha(255)
-                
-                ##MID GROUND
-                tile_image = self.tmxdata.get_tile_image(tile_x,
-                                                         tile_y,
-                                                         MIDGROUND)
-                if tile_image != None:
-                    self.screen.blit(tile_image, 
-                                     (x*TILE_SIZE-(self.offset_x%TILE_SIZE), 
-                                      y*TILE_SIZE-(self.offset_y%TILE_SIZE)))
+        ##MID_GROUND
+        for t in self.mid_ground_list:
+            tile_image = self.tmxdata.get_tile_image_by_gid(t[2])
+            self.screen.blit(tile_image, 
+                            (t[0]*TILE_SIZE-(self.offset_x%TILE_SIZE), 
+                             t[1]*TILE_SIZE-(self.offset_y%TILE_SIZE)))
 
-                ##DANGER TILES           
-                tile_image = self.tmxdata.get_tile_image(tile_x,
-                                                         tile_y,
-                                                         DANGER)
-                if tile_image != None:
-                    self.screen.blit(tile_image, 
-                                     (x*TILE_SIZE-(self.offset_x%TILE_SIZE), 
-                                      y*TILE_SIZE-(self.offset_y%TILE_SIZE)))
+        ##DANGER TILES           
+        for t in self.danger_list:
+            tile_image = self.tmxdata.get_tile_image_by_gid(t[2])
+            self.screen.blit(tile_image, 
+                            (t[0]*TILE_SIZE-(self.offset_x%TILE_SIZE), 
+                             t[1]*TILE_SIZE-(self.offset_y%TILE_SIZE)))
 
-                ##PLATEFORMS            
-                tile_image = self.tmxdata.get_tile_image(tile_x,
-                                                         tile_y,
-                                                         PLAYGROUND)
-                if tile_image != None:
-                    self.screen.blit(tile_image, 
-                                     (x*TILE_SIZE-(self.offset_x%TILE_SIZE), 
-                                      y*TILE_SIZE-(self.offset_y%TILE_SIZE)))
+        ##PLATEFORMS            
+        for t in self.platform_list:
+            tile_image = self.tmxdata.get_tile_image_by_gid(t[2])
+            self.screen.blit(tile_image, 
+                            (t[0]*TILE_SIZE-(self.offset_x%TILE_SIZE), 
+                             t[1]*TILE_SIZE-(self.offset_y%TILE_SIZE)))
                 
-                ##ANIMATED TILES
-                tile_proprerties = self.tmxdata.get_tile_properties(tile_x,
-                                                                    tile_y,
-                                                                    ANIMATION_LAYER)
+        ##ANIMATED TILES
+        for t in self.animation_list:
+            tile_proprerties = self.tmxdata.get_tile_properties_by_gid(t[2])      
+                
                 #Flames
-                if tile_proprerties != None:
-                    if tile_proprerties["type"] == "fire":
-                        if self.counter % tile_proprerties["frames"][self.fire_index].duration == 0:
-                            self.fire_index = (self.fire_index+1)%len(tile_proprerties["frames"])
-                        tile_image = self.tmxdata.get_tile_image_by_gid(tile_proprerties["frames"][self.fire_index].gid)
-                
-                        self.screen.blit(tile_image,
-                                                (x*TILE_SIZE-(self.offset_x%TILE_SIZE), 
-                                                y*TILE_SIZE-(self.offset_y%TILE_SIZE)))
+            if tile_proprerties["type"] == "fire":
+                if self.counter % tile_proprerties["frames"][self.fire_index].duration == 0:
+                    self.fire_index = (self.fire_index+1)%len(tile_proprerties["frames"])
+                tile_image = self.tmxdata.get_tile_image_by_gid(tile_proprerties["frames"][self.fire_index].gid)
+        
+                self.screen.blit(tile_image,
+                                        (t[0]*TILE_SIZE-(self.offset_x%TILE_SIZE), 
+                                        t[1]*TILE_SIZE-(self.offset_y%TILE_SIZE)))
                         
-                ##INTERACTIBLE ANIMATIONS - stuff like doors and levers
-                #Doors
-                tile_proprerties = self.tmxdata.get_tile_properties(tile_x,
-                                                                    tile_y,
-                                                                    PLAYGROUND)
-                for d in self.door_types:
-                    if tile_proprerties != None:
-                        if "type" in tile_proprerties:
-                            if tile_proprerties["type"] == d:
-                                if tile_proprerties["Open"]:
-                                    interact_image = self.tmxdata.get_tile_image_by_gid(tile_proprerties["frames"][1].gid)
-                                else:
-                                    interact_image = self.tmxdata.get_tile_image_by_gid(tile_proprerties["frames"][0].gid)
-                                if interact_image != None:
-                                    self.screen.blit(interact_image,
-                                                    (x*TILE_SIZE-(self.offset_x%TILE_SIZE), 
-                                                    y*TILE_SIZE-(self.offset_y%TILE_SIZE)))
+        ##INTERACTIBLE ANIMATIONS - stuff like doors and levers
+        for t in self.active_tile_list:
+            tile_proprerties = self.tmxdata.get_tile_properties_by_gid(t[2])
+            #Doors   - Might need to make changes because dont check what type it is
+            if tile_proprerties["Open"]:
+                interact_image = self.tmxdata.get_tile_image_by_gid(tile_proprerties["frames"][1].gid)
+            else:
+                interact_image = self.tmxdata.get_tile_image_by_gid(tile_proprerties["frames"][0].gid)
+
+            self.screen.blit(interact_image,
+                            (t[0]*TILE_SIZE-(self.offset_x%TILE_SIZE), 
+                            t[1]*TILE_SIZE-(self.offset_y%TILE_SIZE)))
                 
-                # #Levers
-                # tile_proprerties = self.tmxdata.get_tile_properties(tile_x,
-                #                                                     tile_y,
-                #                                                     INTERACTABLES)
-                # for l in self.lever_types:
-                #     if tile_proprerties != None:
-                #         if "type" in tile_proprerties:
-                #             if tile_proprerties["type"] == l:
-                #                 if tile_proprerties["On"]:
-                #                     interact_image = self.tmxdata.get_tile_image_by_gid(tile_proprerties["frames"][1].gid)
-                #                 else:
-                #                     interact_image = self.tmxdata.get_tile_image_by_gid(tile_proprerties["frames"][0].gid)
-                #                 if interact_image != None:
-                #                     self.screen.blit(interact_image,
-                #                                     (x*TILE_SIZE-(self.offset_x%TILE_SIZE), 
-                #                                     y*TILE_SIZE-(self.offset_y%TILE_SIZE)))
-                                
+        #Levers
+        for t in self.interact_list:
+            tile_proprerties = self.tmxdata.get_tile_properties_by_gid(t[2])
+            if tile_proprerties["On"]:
+                interact_image = self.tmxdata.get_tile_image_by_gid(tile_proprerties["frames"][1].gid)
+            else:
+                interact_image = self.tmxdata.get_tile_image_by_gid(tile_proprerties["frames"][0].gid)
+            
+            self.screen.blit(interact_image,
+                            (t[0]*TILE_SIZE-(self.offset_x%TILE_SIZE), 
+                            t[1]*TILE_SIZE-(self.offset_y%TILE_SIZE)))
+                
         self.counter += 1
                
 
@@ -237,3 +228,65 @@ class map():
                         if tile["type"] == type:
                             if property in tile:
                                 tile[property] = change_to
+    
+
+
+
+    def convert_map_to_list(self):
+        ##This will convert each map layer into a list of all tile pos + gid
+        for y in range (self.tmxdata.height):
+            for x in range (self.tmxdata.width):
+                ##Each list component is (x{without offset}, y{without offset}, tile_gid)
+                tile_x = x
+                tile_y = y
+                
+                ##LEVERS
+                tile_proprerties = self.tmxdata.get_tile_properties(tile_x,
+                                                                    tile_y,
+                                                                    INTERACTABLES)
+                for l in self.lever_types:
+                    if tile_proprerties != None:
+                        if "type" in tile_proprerties:
+                            if tile_proprerties["type"] == l:
+                                self.interact_list.append((x, y, self.tmxdata.get_tile_gid(tile_x, tile_y, INTERACTABLES)))
+                
+                ##DOORS
+                tile_proprerties = self.tmxdata.get_tile_properties(tile_x,
+                                                                    tile_y,
+                                                                    PLAYGROUND)
+                for d in self.door_types:
+                    if tile_proprerties != None:
+                        if "type" in tile_proprerties:
+                            if tile_proprerties["type"] == d:
+                                self.active_tile_list.append((x, y, self.tmxdata.get_tile_gid(tile_x, tile_y, PLAYGROUND)))
+                
+                ##ANIMATIONS
+                tile_proprerties = self.tmxdata.get_tile_properties(tile_x,
+                                                                    tile_y,
+                                                                    ANIMATION_LAYER)
+                if tile_proprerties != None:
+                    self.animation_list.append((x, y, self.tmxdata.get_tile_gid(tile_x, tile_y, ANIMATION_LAYER)))
+                
+                ##MIDGROUND
+                tile_image = self.tmxdata.get_tile_image(tile_x,
+                                                         tile_y,
+                                                         MIDGROUND)
+                if tile_image != None:
+                    self.mid_ground_list.append((x, y, self.tmxdata.get_tile_gid(tile_x, tile_y, MIDGROUND)))
+
+                ##DANGER TILES           
+                tile_image = self.tmxdata.get_tile_image(tile_x,
+                                                         tile_y,
+                                                         DANGER)
+                if tile_image != None:
+                    self.danger_list.append((x, y, self.tmxdata.get_tile_gid(tile_x, tile_y, DANGER)))
+
+                ##PLATEFORMS            
+                tile_image = self.tmxdata.get_tile_image(tile_x,
+                                                         tile_y,
+                                                         PLAYGROUND)
+                if tile_image != None:
+                    self.platform_list.append((x, y, self.tmxdata.get_tile_gid(tile_x, tile_y, PLAYGROUND)))
+                if self.platform_list[0] == None:
+                    self.platform_list[0].pop
+
