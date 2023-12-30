@@ -1,0 +1,108 @@
+{
+    "fileStates": {
+        "1.tmx": {
+            "scale": 1.5,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 238.66666666666669,
+                "y": 117.99999999999997
+            }
+        },
+        "Cave.tsx": {
+            "dynamicWrapping": false,
+            "scaleInDock": 1,
+            "scaleInEditor": 1.5
+        },
+        "Debug_map.tmx": {
+            "expandedObjectLayers": [
+                5
+            ],
+            "scale": 1.8802083333333333,
+            "selectedLayer": 4,
+            "viewCenter": {
+                "x": 239.60110803324102,
+                "y": 160.3545706371191
+            }
+        },
+        "Doors.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1.5
+        },
+        "Flames.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1.5
+        },
+        "Jump_tyester.tmx": {
+            "expandedObjectLayers": [
+                4
+            ],
+            "scale": 2,
+            "selectedLayer": 2,
+            "viewCenter": {
+                "x": 360,
+                "y": 38
+            }
+        },
+        "More.tsx": {
+            "dynamicWrapping": false,
+            "scaleInDock": 1,
+            "scaleInEditor": 1.5
+        },
+        "Test.tmx": {
+            "expandedObjectLayers": [
+                5
+            ],
+            "scale": 1.5,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 264.66666666666663,
+                "y": 213.33333333333331
+            }
+        },
+        "Test1.tmx": {
+            "expandedObjectLayers": [
+                7
+            ],
+            "scale": 0.75,
+            "selectedLayer": 2,
+            "viewCenter": {
+                "x": 77.33333333333337,
+                "y": 283.99999999999994
+            }
+        },
+        "Test2.tmx": {
+            "expandedObjectLayers": [
+                6
+            ],
+            "scale": 2,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 460.5,
+                "y": 168
+            }
+        },
+        "fire test.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "test.tsx": {
+            "dynamicWrapping": true,
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        }
+    },
+    "recentFiles": [
+        "Test.tmx",
+        "Test1.tmx",
+        "Debug_map.tmx",
+        "Flames.tsx",
+        "Doors.tsx",
+        "More.tsx",
+        "Cave.tsx",
+        "Test2.tmx",
+        "test.tsx",
+        "fire test.tsx",
+        "Jump_tyester.tmx",
+        "1.tmx"
+    ]
+}
