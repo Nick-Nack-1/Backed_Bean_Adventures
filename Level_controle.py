@@ -1,5 +1,6 @@
 import pytmx
 from Globals import *
+import pygame
 
 
 class map():
@@ -23,14 +24,19 @@ class map():
         self.door_types = ["Red_door", "Green_door", "Blue_door"]
         self.lever_types = ["Red_lever", "Green_lever", "Blue_lever"]
 
-        self.interact_list = [] #This will be a list of all the tiles on the interact layer
-        self.animation_list = [] #This will be a list of all the tiles on the animations layer
+        self.interact_list = []    #This will be a list of all the tiles on the interact layer
+        self.animation_list = []   #This will be a list of all the tiles on the animations layer
         self.active_tile_list = [] #This will be a list of all the doors and other toggleable stuff
-        self.platform_list = [] #This will be a list of all the tiles on the play_ground layer
-        self.mid_ground_list = [] #This will be a list of all the tiles on the mid_ground layer
-        self.danger_list = [] #This will be a list of all the tiles on the danger layer
+        self.platform_list = []    #This will be a list of all the tiles on the play_ground layer
+        self.mid_ground_list = []  #This will be a list of all the tiles on the mid_ground layer
+        self.danger_list = []      #This will be a list of all the tiles on the danger layer
 
         self.convert_map_to_list()
+
+        ##EXIT
+        self.exit_obj = self.tmxdata.get_object_by_name("plr_Exit")
+        self.exit_obj_rect = pygame.Rect((self.exit_obj.x, self.exit_obj.y), (int(self.exit_obj.width), int(self.exit_obj.height)))
+        print(self.exit_obj_rect)
 
     
 
@@ -52,12 +58,6 @@ class map():
                                      (x*TILE_SIZE-(self.offset_x%TILE_SIZE), 
                                       y*TILE_SIZE-(self.offset_y%TILE_SIZE)))
                     tile_image.set_alpha(255)
-        ##MID_GROUND
-        for t in self.mid_ground_list:
-            tile_image = self.tmxdata.get_tile_image_by_gid(t[2])
-            self.screen.blit(tile_image, 
-                            (t[0]*TILE_SIZE-(self.offset_x%TILE_SIZE), 
-                             t[1]*TILE_SIZE-(self.offset_y%TILE_SIZE)))
 
         ##DANGER TILES           
         for t in self.danger_list:
@@ -68,6 +68,13 @@ class map():
 
         ##PLATEFORMS            
         for t in self.platform_list:
+            tile_image = self.tmxdata.get_tile_image_by_gid(t[2])
+            self.screen.blit(tile_image, 
+                            (t[0]*TILE_SIZE-(self.offset_x%TILE_SIZE), 
+                             t[1]*TILE_SIZE-(self.offset_y%TILE_SIZE)))
+
+        ##MID_GROUND
+        for t in self.mid_ground_list:
             tile_image = self.tmxdata.get_tile_image_by_gid(t[2])
             self.screen.blit(tile_image, 
                             (t[0]*TILE_SIZE-(self.offset_x%TILE_SIZE), 
@@ -217,7 +224,7 @@ class map():
                         self.Change_tile_type_property("Blue_door", "Open", tile["On"], PLAYGROUND)
     
 
-    def Change_tile_type_property(self, type, property, change_to, layer): ##(str, str, any, int)
+    def Change_tile_type_property(self, type :str, property :str, change_to :int, layer :int):
         ##This will search the intire map for tiles whit the same types on the given layer and
         ##chance the given property of those tiles to the given values
         for y in range(self.tmxdata.height):
@@ -289,4 +296,11 @@ class map():
                     self.platform_list.append((x, y, self.tmxdata.get_tile_gid(tile_x, tile_y, PLAYGROUND)))
                 if self.platform_list[0] == None:
                     self.platform_list[0].pop
+            
+    def Exit_Check(self, plr_rect):
+        ##plr_rect = ((map_x, map_y), (width, height))
+        colliding = pygame.Rect.colliderect(plr_rect, self.exit_obj_rect)
+        print(colliding)
+        return colliding
+
 

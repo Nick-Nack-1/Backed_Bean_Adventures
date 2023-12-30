@@ -1,6 +1,0 @@
-Veranderinger om aan te bring na lyn 73 onder draw in level controle
-Inpleks van die properties en stuff vir elke teel toets moet daar as die map ingelaai word 'n lys gemaak
-van al daai teels(elke tiepe apart) en dan in aparte korter for_loops geteken word
-
-elke teel in die list moet sy teel_pos en gid bevat
-nadat alles anders klaar geteken is moet daar 'n loop wees vir elker teel list wat die teel teken + animeer

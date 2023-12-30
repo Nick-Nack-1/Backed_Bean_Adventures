@@ -19,6 +19,8 @@ class Player(pygame.sprite.Sprite):
         self.state = STANDING
         self.jump_timer = 0 #Frame based
         self.jump_y_start = 0 #the y coord were the jump started
+
+        self.plr_rect = pygame.Rect((self.map_x, self.map_y), (TILE_SIZE, TILE_SIZE)) 
     ##NOT DIRECTLY PLR
         self.movement_dir = 0
         self.screen = scrn
@@ -148,4 +150,17 @@ class Player(pygame.sprite.Sprite):
         if self.dead_anm_done:
             return True
         return False
+    
+
+    def Exit(self):
+        print(".")
+        self.plr_rect = pygame.Rect((self.map_x, self.map_y), (TILE_SIZE, TILE_SIZE))
+        return self.map.Exit_Check(self.plr_rect)
+    
+
+    def Reset(self, map):
+        self.map = map
+        self.spawn_point = map.tmxdata.get_object_by_name("Spawn_plr")
+        self.map_x = self.spawn_point.x
+        self.map_y = self.spawn_point.y
     

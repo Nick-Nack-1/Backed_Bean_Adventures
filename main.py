@@ -30,7 +30,8 @@ K_enter_down = False
 K_alt_down = False
 
 ##MAP SETUP
-Map = Level_controle.map(1, screen) 
+level_nom = 0
+Map = Level_controle.map(level_nom, screen) 
 # Map = Level_controle.map("./Maps/Test.tmx", screen)
 
 ##PLAYER
@@ -62,6 +63,8 @@ while running:
 
 
         if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_ESCAPE:
+                running = False
             if event.key == pygame.K_a:
                 ##move left
                 player.Get_movement(-1)
@@ -116,36 +119,40 @@ while running:
             screen = pygame.display.set_mode((SCREEN_WIDTH,SCREEN_HEIGHT), pygame.SCALED | pygame.FULLSCREEN)
 
 
-    t0 = time.perf_counter()
+    # t0 = time.perf_counter()
     ##UPDATE
     S_Update.update()
     if player.Is_dead():
         ##ADD DEATHSCREEN LATER
         running = False
+    
+    if player.Exit():
+        level_nom += 1
+        Map = Level_controle.map(level_nom, screen)
+        player.Reset(Map)
 
     ##DRAW
         
-    t1 = time.perf_counter()
+    # t1 = time.perf_counter()
     screen.fill(back_colour)
-    t2 = time.perf_counter()
+    # t2 = time.perf_counter()
     Map.draw()
-    t3 = time.perf_counter()
+    # t3 = time.perf_counter()
     if running:
         S_Draw.draw(screen)
-    t4 = time.perf_counter()
+    # t4 = time.perf_counter()
     ##CYCLE COUNTER
     if do_timer:
         timer.stop()
     pygame.display.update()
-    # pygame.display.flip()
-    t5 = time.perf_counter()    
+    # t5 = time.perf_counter()    
 
-    t_avg += (t3-t2)
-    frm_cnt += 1
-    if frm_cnt % 60 == 0:
-        frm_cnt = 0
-        print(f"{t1-t0:.4f}, {t2-t1:.4f}, {t_avg/60:.4f}, {t4-t3:.4f}, {t5-t4:.4f}")
-        t_avg = 0
+    # t_avg += (t3-t2)
+    # frm_cnt += 1
+    # if frm_cnt % 60 == 0:
+    #     frm_cnt = 0
+    #     print(f"{t1-t0:.4f}, {t2-t1:.4f}, {t_avg/60:.4f}, {t4-t3:.4f}, {t5-t4:.4f}")
+    #     t_avg = 0
 
 
 pygame.quit()

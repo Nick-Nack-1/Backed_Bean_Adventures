@@ -1,42 +1,18 @@
 import time
+import pytmx
+import pygame
 
 def opt1(times):
-    dic = {}
-    dic["l1"] = {"l2":{"l3":0}}
-    # dic["aaaaaaaaaaae"] = 0
-    # dic["aaaaaaaaaaab"] = 0
-    # dic["aaaaaaaaaaac"] = 0
-    # dic["aaaaaaaaaaad"] = 0
-    # dic["aaaaaaaaaaaa"] = 0
-    # dic["aaaaaaaaaaaf"] = 0
-    for i in range(times):
-#        "aaaaaaaaaaae" in dic
-        dic["l1"]['l2']['l3'] += 1
+    screen = pygame.display.set_mode((10,10))
+    tmxdata = pytmx.load_pygame("./Maps/Test.tmx")
+    for t in range(times):
+        tmxdata.get_tile_image(0, 0, 0)
 
 def opt2(times):
-    dic = {}
-    dic["l1"] = {"l2":{"l3":0}}
-    # dic = {}
-    # dic["aaaaaaaaaaae"] = 0
-    # dic["aaaaaaaaaaab"] = 0
-    # dic["aaaaaaaaaaac"] = 0
-    # dic["aaaaaaaaaaad"] = 0
-    # dic["aaaaaaaaaaaa"] = 0
-    # dic["aaaaaaaaaaaf"] = 0
-    t = dic['l1']['l2']
-    for i in range(times):
-        #dic["aaaaaaaaaaaa"]
-        t['l3'] += 1
-
-# def opt1(times):
-#     list = ["aaaaaaaaaaaa","bbbbbbbbbbbb","cccccccccccc","dddddddddddd","eeeeeeeeeeee","ffffffffffff"]
-#     for i in range(times):
-#         "aaaaaaaaaaaa" in list
-
-# def opt2(times):
-#     list = ["aaaaaaaaaaaa","bbbbbbbbbbbb","cccccccccccc","dddddddddddd","eeeeeeeeeeee","ffffffffffff"]
-#     for i in range(times):
-#         list
+    screen = pygame.display.set_mode((10,10))
+    tmxdata = pytmx.load_pygame("./Maps/Test.tmx")
+    for t in range(times):
+        tmxdata.get_tile_properties(0, 0, 0)
 
 
 def test_time(f, times):
