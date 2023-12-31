@@ -300,7 +300,6 @@ class map():
     def Exit_Check(self, plr_rect):
         ##plr_rect = ((map_x, map_y), (width, height))
         colliding = pygame.Rect.colliderect(plr_rect, self.exit_obj_rect)
-        print(colliding)
         return colliding
 
 

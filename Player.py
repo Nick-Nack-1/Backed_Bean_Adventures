@@ -153,7 +153,6 @@ class Player(pygame.sprite.Sprite):
     
 
     def Exit(self):
-        print(".")
         self.plr_rect = pygame.Rect((self.map_x, self.map_y), (TILE_SIZE, TILE_SIZE))
         return self.map.Exit_Check(self.plr_rect)
     
