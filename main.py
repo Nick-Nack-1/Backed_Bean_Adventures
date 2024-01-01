@@ -4,7 +4,7 @@ import sprite_sheet
 from Globals import *
 import Player
 import Cycle_timer
-import time
+# import time
 
 ##PYGAME SETUP
 pygame.mixer.init()
@@ -22,12 +22,13 @@ Sheet2 = sprite_sheet.read_out("./Maps/mines_of_sharega.png")
 
 ##SIDEBAR SETUP
 #((left,top),(width,height))
-rect = pygame.Rect((800,0),(192,640))
-side_bar = pygame.Surface(rect.size)
+rect = pygame.Rect((SCREEN_WIDTH-120,0),(120,SCREEN_HEIGHT))
+Side_bar = pygame.Surface(rect.size)
 
 ##KEYFLAGS
 K_enter_down = False
 K_alt_down = False
+K_end_down = False
 
 ##MAP SETUP
 level_nom = 0
@@ -40,7 +41,7 @@ player = Player.Player(screen, Map)
 running = True
 full_screen = True
 ##DO CYCLE TIMER
-do_timer = False
+Debug_screen = False
 
 ##GROUPS
 S_Draw = pygame.sprite.Group()
@@ -77,6 +78,9 @@ while running:
             
             if event.key == pygame.K_e:
                 player.Interact()
+            
+            if event.key == pygame.K_END:
+                K_end_down = True
 
             ##TO GO FULLSCREEN
             if event.key == pygame.K_RETURN:
@@ -86,7 +90,7 @@ while running:
             
             ##TOGGLE CYCLE TIMER
             if event.key == pygame.K_F3:
-                do_timer = not do_timer
+                Debug_screen = not Debug_screen
 
 
         if event.type == pygame.KEYUP:
@@ -126,10 +130,11 @@ while running:
         ##ADD DEATHSCREEN LATER
         running = False
     
-    if player.Exit():
+    if player.Exit() or K_end_down:
         level_nom += 1
         Map = Level_controle.map(level_nom, screen)
         player.Reset(Map)
+        K_end_down = False
 
     ##DRAW
         
@@ -138,13 +143,19 @@ while running:
     # t2 = time.perf_counter()
     Map.draw()
     # t3 = time.perf_counter()
-    if running:
+    if running: 
         S_Draw.draw(screen)
     # t4 = time.perf_counter()
     ##CYCLE COUNTER
-    if do_timer:
+    if Debug_screen:
         timer.stop()
+        pygame.draw.rect(screen, (255,0,0), ((160, 80),(160,160)), 1 )
+    
+    ##SIDE_BAR
+    Side_bar.fill("#26150a")
+    screen.blit(Side_bar, (SCREEN_WIDTH-SIDE_BAR_WIDTH, 0))
     pygame.display.update()
+
     # t5 = time.perf_counter()    
 
     # t_avg += (t3-t2)

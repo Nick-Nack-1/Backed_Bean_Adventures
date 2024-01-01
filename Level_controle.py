@@ -9,8 +9,8 @@ class map():
         self.all_maps = ["./Maps/Test.tmx", "./Maps/Test1.tmx", "./Maps/Test2.tmx", "./Maps/Debug_map.tmx"]
         self.tmxdata = pytmx.load_pygame(self.all_maps[map_nom]) #map_nom is for which map to play
         #This is the pixel offset between the map origen(top-left) and the screen origen(0,0)
-        self.offset_x = 0
-        self.offset_y = 0
+        self.offset_x = TILE_SIZE
+        self.offset_y = TILE_SIZE
         self.back_tint = self.tmxdata.get_layer_by_name("Background").tintcolor
 
         ##ANIMATION INDEX
@@ -36,13 +36,12 @@ class map():
         ##EXIT
         self.exit_obj = self.tmxdata.get_object_by_name("plr_Exit")
         self.exit_obj_rect = pygame.Rect((self.exit_obj.x, self.exit_obj.y), (int(self.exit_obj.width), int(self.exit_obj.height)))
-        print(self.exit_obj_rect)
 
     
 
     def draw(self):
-        for y in range (20):
-            for x in range (30):
+        for y in range (21):
+            for x in range (31):
                 tile_x = x+self.offset_x//TILE_SIZE
                 tile_y = y+self.offset_y//TILE_SIZE
                 ##BACKGROUND
@@ -63,22 +62,22 @@ class map():
         for t in self.danger_list:
             tile_image = self.tmxdata.get_tile_image_by_gid(t[2])
             self.screen.blit(tile_image, 
-                            (t[0]*TILE_SIZE-(self.offset_x%TILE_SIZE), 
-                             t[1]*TILE_SIZE-(self.offset_y%TILE_SIZE)))
+                            (t[0]*TILE_SIZE-self.offset_x, 
+                             t[1]*TILE_SIZE-self.offset_y))
 
         ##PLATEFORMS            
         for t in self.platform_list:
             tile_image = self.tmxdata.get_tile_image_by_gid(t[2])
             self.screen.blit(tile_image, 
-                            (t[0]*TILE_SIZE-(self.offset_x%TILE_SIZE), 
-                             t[1]*TILE_SIZE-(self.offset_y%TILE_SIZE)))
+                            (t[0]*TILE_SIZE-self.offset_x, 
+                             t[1]*TILE_SIZE-self.offset_y))
 
         ##MID_GROUND
         for t in self.mid_ground_list:
             tile_image = self.tmxdata.get_tile_image_by_gid(t[2])
             self.screen.blit(tile_image, 
-                            (t[0]*TILE_SIZE-(self.offset_x%TILE_SIZE), 
-                             t[1]*TILE_SIZE-(self.offset_y%TILE_SIZE)))
+                            (t[0]*TILE_SIZE-self.offset_x, 
+                             t[1]*TILE_SIZE-self.offset_y))
                 
         ##ANIMATED TILES
         for t in self.animation_list:
@@ -91,8 +90,8 @@ class map():
                 tile_image = self.tmxdata.get_tile_image_by_gid(tile_proprerties["frames"][self.fire_index].gid)
         
                 self.screen.blit(tile_image,
-                                        (t[0]*TILE_SIZE-(self.offset_x%TILE_SIZE), 
-                                        t[1]*TILE_SIZE-(self.offset_y%TILE_SIZE)))
+                                        (t[0]*TILE_SIZE-self.offset_x, 
+                                        t[1]*TILE_SIZE-self.offset_y))
                         
         ##INTERACTIBLE ANIMATIONS - stuff like doors and levers
         for t in self.active_tile_list:
@@ -104,8 +103,8 @@ class map():
                 interact_image = self.tmxdata.get_tile_image_by_gid(tile_proprerties["frames"][0].gid)
 
             self.screen.blit(interact_image,
-                            (t[0]*TILE_SIZE-(self.offset_x%TILE_SIZE), 
-                            t[1]*TILE_SIZE-(self.offset_y%TILE_SIZE)))
+                            (t[0]*TILE_SIZE-self.offset_x, 
+                            t[1]*TILE_SIZE-self.offset_y))
                 
         #Levers
         for t in self.interact_list:
@@ -116,8 +115,8 @@ class map():
                 interact_image = self.tmxdata.get_tile_image_by_gid(tile_proprerties["frames"][0].gid)
             
             self.screen.blit(interact_image,
-                            (t[0]*TILE_SIZE-(self.offset_x%TILE_SIZE), 
-                            t[1]*TILE_SIZE-(self.offset_y%TILE_SIZE)))
+                            (t[0]*TILE_SIZE-self.offset_x, 
+                            t[1]*TILE_SIZE-self.offset_y))
                 
         self.counter += 1
                
@@ -237,7 +236,45 @@ class map():
                                 tile[property] = change_to
     
 
+    def Panning(self, axes:str, nom:int):
 
+        # "l" = left
+        # "r" = right
+        # "t" = top
+        # "b" = bottom
+        amount = int(nom)
+        if axes == "l" and amount < 0:
+            self.offset_x += amount
+            if self.offset_x < TILE_SIZE:
+                self.offset_x -= amount
+                return True
+            
+            elif self.offset_x > (self.tmxdata.width-31)*TILE_SIZE:
+                self.offset_x -= amount
+                return True
+        elif axes == "r" and amount > 0:
+            self.offset_x += amount
+            if self.offset_x < TILE_SIZE:
+                self.offset_x -= amount
+            
+            elif self.offset_x > (self.tmxdata.width-31)*TILE_SIZE:
+                self.offset_x -= amount
+
+        if axes == "t" and amount < 0:
+            self.offset_y += amount
+            if self.offset_y < TILE_SIZE:
+                self.offset_y -= amount
+            
+            elif self.offset_y > (self.tmxdata.height-21)*16:
+                self.offset_y -= amount
+
+        elif axes == "b" and amount > 0:
+            self.offset_y += amount
+            if self.offset_y < TILE_SIZE:
+                self.offset_y -= amount
+            
+            elif self.offset_y > (self.tmxdata.height-21)*16:
+                self.offset_y -= amount
 
     def convert_map_to_list(self):
         ##This will convert each map layer into a list of all tile pos + gid
@@ -246,6 +283,8 @@ class map():
                 ##Each list component is (x{without offset}, y{without offset}, tile_gid)
                 tile_x = x
                 tile_y = y
+
+
                 
                 ##LEVERS
                 tile_proprerties = self.tmxdata.get_tile_properties(tile_x,
@@ -301,5 +340,12 @@ class map():
         ##plr_rect = ((map_x, map_y), (width, height))
         colliding = pygame.Rect.colliderect(plr_rect, self.exit_obj_rect)
         return colliding
+    
+
+    # def Change_map_offset(self, axe:str, amount:int):
+    #     if axe == "x":
+    #         self.offset_x += amount
+    #     if axe == "y":
+    #         self.offset_y += amount
 
 
