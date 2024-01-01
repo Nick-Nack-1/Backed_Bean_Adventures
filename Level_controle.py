@@ -36,7 +36,6 @@ class map():
         ##EXIT
         self.exit_obj = self.tmxdata.get_object_by_name("plr_Exit")
         self.exit_obj_rect = pygame.Rect((self.exit_obj.x, self.exit_obj.y), (int(self.exit_obj.width), int(self.exit_obj.height)))
-
     
 
     def draw(self):
@@ -124,7 +123,6 @@ class map():
     def Calculate_screen_pos(self, sprite_pos):
         ##Turns the map pos that is inserted to screen pos 
         return (sprite_pos[0]-self.offset_x, sprite_pos[1]-self.offset_y)
-    
     
 
     def Check_Collisions(self, pos, rect):
@@ -276,6 +274,7 @@ class map():
             elif self.offset_y > (self.tmxdata.height-21)*16:
                 self.offset_y -= amount
 
+
     def convert_map_to_list(self):
         ##This will convert each map layer into a list of all tile pos + gid
         for y in range (self.tmxdata.height):
@@ -335,17 +334,9 @@ class map():
                     self.platform_list.append((x, y, self.tmxdata.get_tile_gid(tile_x, tile_y, PLAYGROUND)))
                 if self.platform_list[0] == None:
                     self.platform_list[0].pop
-            
+
+
     def Exit_Check(self, plr_rect):
         ##plr_rect = ((map_x, map_y), (width, height))
         colliding = pygame.Rect.colliderect(plr_rect, self.exit_obj_rect)
         return colliding
-    
-
-    # def Change_map_offset(self, axe:str, amount:int):
-    #     if axe == "x":
-    #         self.offset_x += amount
-    #     if axe == "y":
-    #         self.offset_y += amount
-
-

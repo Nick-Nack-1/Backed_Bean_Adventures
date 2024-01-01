@@ -123,7 +123,6 @@ class Player(pygame.sprite.Sprite):
                     if picture[1]: #This checks if the animation has finished
                         self.dead_anm_done = True
 
-
     
     def Is_Jumping(self, is_jumping):
         if is_jumping:
