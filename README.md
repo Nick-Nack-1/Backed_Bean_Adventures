@@ -4,5 +4,7 @@ If you want a working version take it from the main branch if you take it from t
 
 # Controls
 "A" and "D" for left and right
+
 "SPACE" to jump
+
 "E" to interact with tiles
