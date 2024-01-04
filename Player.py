@@ -8,11 +8,13 @@ class Player(pygame.sprite.Sprite):
     def __init__(self,scrn,map):
         super(Player, self).__init__()
     ##DIRECTLY PLR
-        ##This is the distance from map origen to plr
+        
         self.image = pygame.image.load(DEFAULT_TEXTURE).convert_alpha()
         self.rect = self.image.get_rect()
         self.spawn_point = map.tmxdata.get_object_by_name("Spawn_plr")
+        ##This is the distance from map origen to plr
         self.map_x = self.spawn_point.x
+        ##This is the distance from map origen to plr
         self.map_y = self.spawn_point.y
         self.screen_x = 0
         self.screen_y = 0
@@ -52,7 +54,8 @@ class Player(pygame.sprite.Sprite):
         if self.state != DEAD:
             ##MOVEMENT
             self.map_x += self.movement_dir*speed
-            Collisions = self.map.Check_Collisions((self.map_x+5,self.map_y), (self.collide_box[0],self.collide_box[1]-1))
+            Collisions = self.map.Check_Collisions((self.map_x+5,self.map_y), #Die +5 is om sy hitbox na die regte plek te skuif
+                                                   (self.collide_box[0],self.collide_box[1]-1))
             if "TR" in Collisions or "BR" in Collisions:
                 self.map_x = ((self.map_x//TILE_SIZE)*TILE_SIZE)+4
             elif "TL" in Collisions or "BL" in Collisions:
@@ -62,31 +65,26 @@ class Player(pygame.sprite.Sprite):
             if self.state == JUMPING:
                 self.jump_timer += 1
                 if self.jump_timer > JUMPDURATION-1:
-                    # self.movement_dir = 0
                     self.state = RUNNING
                 else:
                     self.map_y -= self.jump_scedule[self.jump_timer] 
-                Collisions = self.map.Check_Collisions((self.map_x+5,self.map_y), self.collide_box)
+                Collisions = self.map.Check_Collisions((self.map_x+5,self.map_y), self.collide_box) #Die +5 is om sy hitbox na die regte plek te skuif
                 if "TL" in Collisions or "TR" in Collisions:
                         self.map_y = ((self.map_y+15)//TILE_SIZE)*TILE_SIZE
                         self.state = RUNNING
                 elif self.jump_timer > JUMPDURATION//2-1:
                     if "BL" in Collisions or "BR" in Collisions:
-                        # self.movement_dir = 0
                         self.map_y = (self.map_y//TILE_SIZE)*TILE_SIZE
                         self.state = RUNNING
 
 
             ##GRAVITY
             if self.state != JUMPING:
-                Collisions = self.map.Check_Collisions((self.map_x+5,self.map_y), (self.collide_box[0], self.collide_box[1]+1))
+                Collisions = self.map.Check_Collisions((self.map_x+5,self.map_y), #Die +5 is om sy hitbox na die regte plek te skuif
+                                                       (self.collide_box[0], self.collide_box[1]+1))
                 self.map_y += FALL_SPEED
                 if "BL" in Collisions or "BR" in Collisions:
                     self.map_y = ((self.map_y//TILE_SIZE)*TILE_SIZE)
-                # if not("BL" in Collisions or "BR" in Collisions):
-                #     self.map_y += FALL_SPEED
-                # else:
-                #     self.map_y = (self.map_y//TILE_SIZE)*TILE_SIZE
 
             ##Updates the screen pos
             self.rect.x,self.rect.y = self.map.Calculate_screen_pos((self.map_x,self.map_y))
@@ -150,7 +148,7 @@ class Player(pygame.sprite.Sprite):
     
     def Is_dead(self):
         test_tiles = self.map.Test_tile(DANGER, 
-                                        (self.map_x,self.map_y), 
+                                        (self.map_x+5,self.map_y), #Die +5 is om sy hitbox na die regte plek te skuif
                                         (self.collide_box[0],self.collide_box[1]-1))
         if len(test_tiles) != 0:
             for T in test_tiles:
