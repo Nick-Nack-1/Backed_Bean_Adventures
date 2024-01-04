@@ -131,4 +131,34 @@
    <frame tileid="283" duration="2000"/>
   </animation>
  </tile>
+ <tile id="320" type="Red_door">
+  <properties>
+   <property name="Open" type="bool" value="false"/>
+  </properties>
+ </tile>
+ <tile id="321" type="Green_door">
+  <properties>
+   <property name="Open" type="bool" value="false"/>
+  </properties>
+ </tile>
+ <tile id="322" type="Blue_door">
+  <properties>
+   <property name="Open" type="bool" value="false"/>
+  </properties>
+ </tile>
+ <wangsets>
+  <wangset name="Dirt_1" type="edge" tile="-1">
+   <wangcolor name="" color="#ff0000" tile="-1" probability="1"/>
+   <wangcolor name="" color="#00ff00" tile="-1" probability="1"/>
+   <wangtile tileid="255" wangid="0,0,1,0,1,0,0,0"/>
+   <wangtile tileid="256" wangid="0,0,1,0,1,0,1,0"/>
+   <wangtile tileid="257" wangid="0,0,0,0,1,0,1,0"/>
+   <wangtile tileid="295" wangid="1,0,1,0,1,0,0,0"/>
+   <wangtile tileid="296" wangid="1,0,1,0,1,0,1,0"/>
+   <wangtile tileid="297" wangid="1,0,0,0,1,0,1,0"/>
+   <wangtile tileid="335" wangid="1,0,1,0,0,0,0,0"/>
+   <wangtile tileid="336" wangid="1,0,1,0,0,0,1,0"/>
+   <wangtile tileid="337" wangid="1,0,0,0,0,0,1,0"/>
+  </wangset>
+ </wangsets>
 </tileset>

@@ -35,5 +35,11 @@ TOP_B = SCREEN_CENTRE[1]-5*TILE_SIZE #TOP_BORDER
 BOTTOM_B = SCREEN_CENTRE[1]+5*TILE_SIZE #BOTTOM_BORDER
 
 
+#Main Loop
+INTRO = 0
+MENU = 1
+PLAY = 2
+DEAD = 3
+
 ##Refrencses
 #   @Map origen = top-left of map
