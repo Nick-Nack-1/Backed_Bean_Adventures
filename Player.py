@@ -27,6 +27,13 @@ class Player(pygame.sprite.Sprite):
         self.dead_anm_done = False #Death_animation_done
         self.map = map
         self.collide_box = (6, TILE_SIZE) #This will be used to test tile collisions
+
+        self.jump_scedule = [] ##THIS WILL CONTAIN ALL THE STEPS OR DELTA_Y'S FOR JUMPING
+        previous_jump = 0
+        for i in range(JUMPDURATION):
+            curren_jump = -(48/900)*((i)-(JUMPDURATION//2))**2+48
+            self.jump_scedule.append(curren_jump-previous_jump)
+            previous_jump = curren_jump
     ##ANIMATIONS
         self.stand_animate = sprite_sheet.animate(4, 4)
         self.stand_animate.Set_sheet("./Images/player_standing.png")
@@ -43,27 +50,26 @@ class Player(pygame.sprite.Sprite):
 
     def update(self):
         if self.state != DEAD:
-            # print(self.state)
             ##MOVEMENT
             self.map_x += self.movement_dir*speed
             Collisions = self.map.Check_Collisions((self.map_x+5,self.map_y), (self.collide_box[0],self.collide_box[1]-1))
             if "TR" in Collisions or "BR" in Collisions:
                 self.map_x = ((self.map_x//TILE_SIZE)*TILE_SIZE)+4
-            if "TL" in Collisions or "BL" in Collisions:
+            elif "TL" in Collisions or "BL" in Collisions:
                 self.map_x = (((self.map_x+15)//TILE_SIZE)*TILE_SIZE)-5
 
             ##JUMPING
             if self.state == JUMPING:
                 self.jump_timer += 1
-                y = -(48/900)*(self.jump_timer-(JUMPDURATION//2))**2+48
-                self.map_y = self.jump_y_start-y
+                if self.jump_timer > JUMPDURATION-1:
+                    # self.movement_dir = 0
+                    self.state = RUNNING
+                else:
+                    self.map_y -= self.jump_scedule[self.jump_timer] 
                 Collisions = self.map.Check_Collisions((self.map_x+5,self.map_y), self.collide_box)
                 if "TL" in Collisions or "TR" in Collisions:
                         self.map_y = ((self.map_y+15)//TILE_SIZE)*TILE_SIZE
                         self.state = RUNNING
-                if self.jump_timer > JUMPDURATION:
-                    # self.movement_dir = 0
-                    self.state = RUNNING
                 elif self.jump_timer > JUMPDURATION//2-1:
                     if "BL" in Collisions or "BR" in Collisions:
                         # self.movement_dir = 0
@@ -103,6 +109,12 @@ class Player(pygame.sprite.Sprite):
                         self.image = pygame.transform.flip(picture[0], True, False)
                     else:
                         self.image = picture[0]
+            
+            self.Boundry_box()
+
+            ##Updates the screen pos
+            self.rect.x,self.rect.y = self.map.Calculate_screen_pos((self.map_x,self.map_y))
+
         elif not self.dead_anm_done:
             for i in range(5):
                 picture = self.death_animation.Play()
@@ -110,7 +122,6 @@ class Player(pygame.sprite.Sprite):
                     self.image = picture[0]
                     if picture[1]: #This checks if the animation has finished
                         self.dead_anm_done = True
-
 
     
     def Is_Jumping(self, is_jumping):
@@ -152,8 +163,25 @@ class Player(pygame.sprite.Sprite):
         return False
     
 
+    def Boundry_box(self):
+        screen_x,screen_y = self.map.Calculate_screen_pos((self.map_x,self.map_y))
+        x_dif = int(screen_x - SCREEN_CENTRE[0])
+        y_dif = int(screen_y - SCREEN_CENTRE[1])
+        if abs(x_dif) > (5*TILE_SIZE): ##If the player is outside the boundry box
+            # print("x")
+            if x_dif < 0:
+                self.map.Panning("l",screen_x-LEFT_B)
+            elif x_dif > 0:
+                self.map.Panning("r",screen_x-RIGHT_B)
+            
+        if abs(y_dif) > (5*TILE_SIZE): ##If the player is outside the boundry box
+            if y_dif < 0:
+                self.map.Panning("t",screen_y-TOP_B)
+            elif y_dif > 0:
+                self.map.Panning("b",screen_y-BOTTOM_B)
+
+
     def Exit(self):
-        print(".")
         self.plr_rect = pygame.Rect((self.map_x, self.map_y), (TILE_SIZE, TILE_SIZE))
         return self.map.Exit_Check(self.plr_rect)
     
@@ -163,4 +191,5 @@ class Player(pygame.sprite.Sprite):
         self.spawn_point = map.tmxdata.get_object_by_name("Spawn_plr")
         self.map_x = self.spawn_point.x
         self.map_y = self.spawn_point.y
+
     

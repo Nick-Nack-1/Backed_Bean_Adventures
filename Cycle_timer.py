@@ -24,9 +24,9 @@ class timer():
         else:
             self.average_sum += self.time
 
-        text = self.font1.render("- speed: "+str(int(self.time*1000))+" ms", 1,(255,255,255))
+        text = self.font1.render("- Speed: "+str(int(self.time*1000))+" ms", 1,(255,255,255))
         self.screen.blit(text, (0, 3))
-        text2 = self.font1.render("- avg_speed: "+str(int(self.average*1000))+" ms", 1,(255,255,255))
+        text2 = self.font1.render("- Avg_speed: "+str(int(self.average*1000))+" ms", 1,(255,255,255))
         self.screen.blit(text2, (0, 13))
 
         self.counter += 1
