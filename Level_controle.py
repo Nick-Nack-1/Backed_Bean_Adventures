@@ -15,7 +15,7 @@ class map():
 
         ##ANIMATION INDEX
         self.fire_index = 0
-        self.key_index = 0 
+        self.conveyor_index = 0 
         self.diamond_index = 0
         self.cion_index = 0 
         self.counter = 0 #Frame counter
@@ -80,13 +80,23 @@ class map():
                 
         ##ANIMATED TILES
         for t in self.animation_list:
-            tile_proprerties = self.tmxdata.get_tile_properties_by_gid(t[2])      
+            tile_proprerties = self.tmxdata.get_tile_properties_by_gid(t[2]) #2 = index for gid     
                 
-                #Flames
+            #Flames
             if tile_proprerties["type"] == "fire":
                 if self.counter % tile_proprerties["frames"][self.fire_index].duration == 0:
                     self.fire_index = (self.fire_index+1)%len(tile_proprerties["frames"])
                 tile_image = self.tmxdata.get_tile_image_by_gid(tile_proprerties["frames"][self.fire_index].gid)
+        
+                self.screen.blit(tile_image,
+                                        (t[0]*TILE_SIZE-self.offset_x, 
+                                        t[1]*TILE_SIZE-self.offset_y))
+                
+            #Conveyors
+            if tile_proprerties["type"] == "Conveyor":
+                if self.counter % tile_proprerties["frames"][self.conveyor_index].duration == 0:
+                    self.conveyor_index = (self.conveyor_index+1)%len(tile_proprerties["frames"])
+                tile_image = self.tmxdata.get_tile_image_by_gid(tile_proprerties["frames"][self.conveyor_index].gid)
         
                 self.screen.blit(tile_image,
                                         (t[0]*TILE_SIZE-self.offset_x, 
@@ -220,6 +230,26 @@ class map():
                         tile["On"] = not tile["On"]
                         self.Change_tile_type_property("Blue_door", "Open", tile["On"], PLAYGROUND)
     
+
+    def conveyors(self,plr_pos, plr_rect):
+        ##This function will check if the plr is standing on a conveyor and if so return the movemet direction
+        ##Bottom Left
+        BL = (int(plr_pos[0]/TILE_SIZE), int((plr_pos[1]+plr_rect[1]+2)/TILE_SIZE))## +2 is to chech tile plr is walking on
+        ##Bottom Right
+        BR = (int((plr_pos[0]+plr_rect[0])/TILE_SIZE), int((plr_pos[1]+plr_rect[1]+2)/TILE_SIZE))## +2 is to chech tile plr is walking on
+
+        Check_tile = self.tmxdata.get_tile_properties(BL[0], BL[1], PLAYGROUND)
+        if Check_tile != None:
+            if "move_dir" in Check_tile:
+                return Check_tile["move_dir"]
+        
+        Check_tile = self.tmxdata.get_tile_properties(BR[0], BR[1], PLAYGROUND)
+        if Check_tile != None:
+            if "move_dir" in Check_tile:
+                return Check_tile["move_dir"]
+        
+        return 0 ##Plr is not standing on a conveyor
+
 
     def Change_tile_type_property(self, type :str, property :str, change_to :int, layer :int):
         ##This will search the intire map for tiles whit the same types on the given layer and

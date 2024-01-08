@@ -52,8 +52,9 @@ class Player(pygame.sprite.Sprite):
 
     def update(self):
         if self.state != DEAD:
-            ##MOVEMENT
+            ##MOVEMENT in x axes
             self.map_x += self.movement_dir*speed
+            self.map_x += self.map.conveyors((self.map_x+5,self.map_y),self.collide_box)*speed
             Collisions = self.map.Check_Collisions((self.map_x+5,self.map_y), #Die +5 is om sy hitbox na die regte plek te skuif
                                                    (self.collide_box[0],self.collide_box[1]-1))
             if "TR" in Collisions or "BR" in Collisions:
