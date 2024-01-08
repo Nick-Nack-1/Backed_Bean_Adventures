@@ -24,6 +24,10 @@
             "scaleInDock": 1,
             "scaleInEditor": 16
         },
+        "Conveyors.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
         "Debug_map.tmx": {
             "expandedObjectLayers": [
                 5
@@ -66,8 +70,8 @@
             "scale": 1.5,
             "selectedLayer": 6,
             "viewCenter": {
-                "x": 355.33333333333326,
-                "y": 228.66666666666663
+                "x": 255.99999999999997,
+                "y": 176
             }
         },
         "Test1.tmx": {
@@ -77,8 +81,8 @@
             "scale": 2,
             "selectedLayer": 6,
             "viewCenter": {
-                "x": 278,
-                "y": 154.5
+                "x": 240.5,
+                "y": 105
             }
         },
         "Test2.tmx": {
@@ -88,8 +92,8 @@
             "scale": 2,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 202.5,
-                "y": 280.5
+                "x": 336,
+                "y": 256
             }
         },
         "fire test.tsx": {
@@ -103,8 +107,8 @@
             "scale": 1.5,
             "selectedLayer": 5,
             "viewCenter": {
-                "x": 376,
-                "y": 819.3333333333333
+                "x": 255.66666666666666,
+                "y": 320.66666666666663
             }
         },
         "test.tsx": {
@@ -116,31 +120,27 @@
     "frame.defaultDuration": 10,
     "last.imagePath": "C:/Users/nlste/OneDrive/Documents/GitHub/The_Sky_Gem/Images",
     "openFiles": [
-        "Cave.tsx",
-        "More.tsx",
-        "Doors.tsx",
-        "Flames.tsx",
         "level_1.tmx",
-        "Debug_map.tmx",
         "Test.tmx",
         "Test1.tmx",
-        "Test2.tmx"
+        "Test2.tmx",
+        "Conveyors.tsx"
     ],
     "project": "untitled.tiled-project",
     "property.type": "int",
     "recentFiles": [
+        "level_1.tmx",
+        "Test.tmx",
+        "Conveyors.tsx",
+        "Test2.tmx",
+        "Test1.tmx",
         "Conveyor.tsx",
         "Debug_map.tmx",
         "Flames.tsx",
         "Doors.tsx",
         "More.tsx",
         "Cave.tsx",
-        "level_1.tmx",
-        "Test.tmx",
-        "Test2.tmx",
-        "Test1.tmx",
-        "test.tsx",
-        "fire test.tsx"
+        "test.tsx"
     ],
     "tileset.lastUsedFormat": "tsx",
     "tileset.tileSize": {
