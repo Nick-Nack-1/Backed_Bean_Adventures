@@ -71,7 +71,7 @@ while running == True:
                 if event.key == pygame.K_a:
                     ##move left
                     player.Get_movement(-1)
-                elif event.key == pygame.K_d:
+                if event.key == pygame.K_d:
                     ##move right
                     player.Get_movement(1)
                 if event.key == pygame.K_SPACE:
@@ -99,7 +99,7 @@ while running == True:
                 if event.key == pygame.K_a:
                     ##stop moving
                     player.Get_movement(0)
-                elif event.key == pygame.K_d:
+                if event.key == pygame.K_d:
                     ##stop moving
                     player.Get_movement(0)
                 if event.key == pygame.K_SPACE:

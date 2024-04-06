@@ -24,6 +24,8 @@ class Player(pygame.sprite.Sprite):
 
         self.plr_rect = pygame.Rect((self.map_x, self.map_y), (TILE_SIZE, TILE_SIZE)) 
     ##NOT DIRECTLY PLR
+        self.distance_fallen = 0 #for fall damage (pixels)
+        self.living = True
         self.movement_dir = 0
         self.screen = scrn
         self.dead_anm_done = False #Death_animation_done
@@ -51,10 +53,15 @@ class Player(pygame.sprite.Sprite):
     
 
     def update(self):
-        if self.state != DEAD:
+        if self.living == True:
             ##MOVEMENT in x axes
-            self.map_x += self.movement_dir*speed
-            self.map_x += self.map.conveyors((self.map_x+5,self.map_y),self.collide_box)*speed
+            # self.map_x += self.movement_dir*speed
+            conveyor_movement = self.map.conveyors((self.map_x+5,self.map_y),self.collide_box)*(speed)
+            # self.map_x += conveyor_movement
+            if conveyor_movement != 0:
+                self.map_x += conveyor_movement
+            else:
+                self.map_x += self.movement_dir*speed
             Collisions = self.map.Check_Collisions((self.map_x+5,self.map_y), #Die +5 is om sy hitbox na die regte plek te skuif
                                                    (self.collide_box[0],self.collide_box[1]-1))
             if "TR" in Collisions or "BR" in Collisions:
@@ -77,6 +84,9 @@ class Player(pygame.sprite.Sprite):
                     if "BL" in Collisions or "BR" in Collisions:
                         self.map_y = (self.map_y//TILE_SIZE)*TILE_SIZE
                         self.state = RUNNING
+                    else:
+                        if self.jump_timer < JUMPDURATION:
+                            self.distance_fallen += self.jump_scedule[self.jump_timer] 
 
 
             ##GRAVITY
@@ -86,6 +96,13 @@ class Player(pygame.sprite.Sprite):
                 self.map_y += FALL_SPEED
                 if "BL" in Collisions or "BR" in Collisions:
                     self.map_y = ((self.map_y//TILE_SIZE)*TILE_SIZE)
+                    if self.distance_fallen > MAX_DIS_FALL: ##Check if plr die of fall damage
+                        self.living = False
+                        print("splat")
+                    else:
+                        self.distance_fallen = 0
+                else:
+                    self.distance_fallen += FALL_SPEED
 
             ##Updates the screen pos
             self.rect.x,self.rect.y = self.map.Calculate_screen_pos((self.map_x,self.map_y))
@@ -156,7 +173,7 @@ class Player(pygame.sprite.Sprite):
                 if "Will_kill" in T:
                     if T["Will_kill"]:
                         ##If it will kill the player.
-                        self.state = DEAD
+                        self.living = False
         if self.dead_anm_done:
             return True
         return False

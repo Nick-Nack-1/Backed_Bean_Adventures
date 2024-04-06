@@ -6,7 +6,7 @@ import pygame
 class map():
     def __init__(self, map_nom, scn):
         self.screen = scn
-        self.all_maps = ["./Maps/Test.tmx", "./Maps/Test1.tmx", "./Maps/Test2.tmx", "./Maps/Debug_map.tmx"]
+        self.all_maps = ["./Maps/Test.tmx", "./Maps/Test1.tmx", "./Maps/Test3.tmx", "./Maps/Test_type2.tmx", "./Maps/Debug_map.tmx"]
         self.tmxdata = pytmx.load_pygame(self.all_maps[map_nom]) #map_nom is for which map to play
         #This is the pixel offset between the map origen(top-left) and the screen origen(0,0)
         self.offset_x = TILE_SIZE
@@ -79,13 +79,17 @@ class map():
                              t[1]*TILE_SIZE-self.offset_y))
                 
         ##ANIMATED TILES
+        conveyor_img_changed = False #This it to make sure the conveyor img doesn't get changed twice in the same frame
+        flame_img_changed = False #This it to make sure the flame img doesn't get changed twice in the same frame
         for t in self.animation_list:
             tile_proprerties = self.tmxdata.get_tile_properties_by_gid(t[2]) #2 = index for gid     
                 
             #Flames
             if tile_proprerties["type"] == "fire":
                 if self.counter % tile_proprerties["frames"][self.fire_index].duration == 0:
-                    self.fire_index = (self.fire_index+1)%len(tile_proprerties["frames"])
+                    if not flame_img_changed:
+                        flame_img_changed = True
+                        self.fire_index = (self.fire_index+1)%len(tile_proprerties["frames"])
                 tile_image = self.tmxdata.get_tile_image_by_gid(tile_proprerties["frames"][self.fire_index].gid)
         
                 self.screen.blit(tile_image,
@@ -93,9 +97,11 @@ class map():
                                         t[1]*TILE_SIZE-self.offset_y))
                 
             #Conveyors
-            if tile_proprerties["type"] == "Conveyor":
+            elif tile_proprerties["type"] == "Conveyor":
                 if self.counter % tile_proprerties["frames"][self.conveyor_index].duration == 0:
-                    self.conveyor_index = (self.conveyor_index+1)%len(tile_proprerties["frames"])
+                    if not conveyor_img_changed:
+                        conveyor_img_changed = True
+                        self.conveyor_index = (self.conveyor_index+1)%len(tile_proprerties["frames"])
                 tile_image = self.tmxdata.get_tile_image_by_gid(tile_proprerties["frames"][self.conveyor_index].gid)
         
                 self.screen.blit(tile_image,
@@ -362,8 +368,8 @@ class map():
                                                          PLAYGROUND)
                 if tile_image != None:
                     self.platform_list.append((x, y, self.tmxdata.get_tile_gid(tile_x, tile_y, PLAYGROUND)))
-                if self.platform_list[0] == None:
-                    self.platform_list[0].pop
+#                if self.platform_list[0] == None:
+#                    self.platform_list[0].pop
 
 
     def Exit_Check(self, plr_rect):

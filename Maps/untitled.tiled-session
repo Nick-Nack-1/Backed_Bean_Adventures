@@ -1,5 +1,5 @@
 {
-    "activeFile": "Test1.tmx",
+    "activeFile": "Test.tmx",
     "expandedProjectPaths": [
         "."
     ],
@@ -45,7 +45,7 @@
         },
         "Flames.tsx": {
             "scaleInDock": 1,
-            "scaleInEditor": 1.5
+            "scaleInEditor": 1
         },
         "Jump_tyester.tmx": {
             "expandedObjectLayers": [
@@ -63,15 +63,23 @@
             "scaleInDock": 1,
             "scaleInEditor": 3
         },
+        "Test - Copy.tmx": {
+            "scale": 1.7626953125,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 256.425484764543,
+                "y": 176.4343490304709
+            }
+        },
         "Test.tmx": {
             "expandedObjectLayers": [
                 5
             ],
             "scale": 1.5,
-            "selectedLayer": 6,
+            "selectedLayer": 4,
             "viewCenter": {
-                "x": 255.99999999999997,
-                "y": 176
+                "x": 254.33333333333337,
+                "y": 172.66666666666666
             }
         },
         "Test1.tmx": {
@@ -79,10 +87,10 @@
                 7
             ],
             "scale": 2,
-            "selectedLayer": 6,
+            "selectedLayer": 5,
             "viewCenter": {
-                "x": 240.5,
-                "y": 105
+                "x": 239.75,
+                "y": 175.5
             }
         },
         "Test2.tmx": {
@@ -92,8 +100,19 @@
             "scale": 2,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 336,
-                "y": 256
+                "x": 335.25,
+                "y": 183.5
+            }
+        },
+        "Test3.tmx": {
+            "expandedObjectLayers": [
+                5
+            ],
+            "scale": 1.7626953125,
+            "selectedLayer": 8,
+            "viewCenter": {
+                "x": 255.85817174515236,
+                "y": 175.86703601108036
             }
         },
         "fire test.tsx": {
@@ -107,8 +126,8 @@
             "scale": 1.5,
             "selectedLayer": 5,
             "viewCenter": {
-                "x": 255.66666666666666,
-                "y": 320.66666666666663
+                "x": 254.99999999999997,
+                "y": 488
             }
         },
         "test.tsx": {
@@ -119,28 +138,30 @@
     },
     "frame.defaultDuration": 10,
     "last.imagePath": "C:/Users/nlste/OneDrive/Documents/GitHub/The_Sky_Gem/Images",
+    "last.objectTemplatePath": "C:/Users/nlste/OneDrive/Documents/GitHub/The_Sky_Gem/Maps/OBJ_Templates",
     "openFiles": [
         "level_1.tmx",
         "Test.tmx",
         "Test1.tmx",
-        "Test2.tmx",
-        "Conveyors.tsx"
+        "Conveyors.tsx",
+        "Flames.tsx",
+        "Test3.tmx"
     ],
     "project": "untitled.tiled-project",
     "property.type": "int",
     "recentFiles": [
         "level_1.tmx",
-        "Test.tmx",
+        "Test3.tmx",
+        "Flames.tsx",
         "Conveyors.tsx",
-        "Test2.tmx",
         "Test1.tmx",
+        "Test.tmx",
+        "Test2.tmx",
+        "Test - Copy.tmx",
         "Conveyor.tsx",
         "Debug_map.tmx",
-        "Flames.tsx",
         "Doors.tsx",
-        "More.tsx",
-        "Cave.tsx",
-        "test.tsx"
+        "More.tsx"
     ],
     "tileset.lastUsedFormat": "tsx",
     "tileset.tileSize": {
