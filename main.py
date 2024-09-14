@@ -68,8 +68,10 @@ while running == True:
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
                     running = False
-                if event.key == pygame.K_a:
+              
+              
                     ##move left
+                if event.key == pygame.K_a:
                     player.Get_movement(-1)
                 if event.key == pygame.K_d:
                     ##move right

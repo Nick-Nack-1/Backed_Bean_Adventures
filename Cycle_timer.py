@@ -3,6 +3,7 @@ import pygame
 
 class timer():
     def __init__(self,scn):
+        ##By calling init you start this timer
         pygame.font.init()
         self.start = time.perf_counter()
         self.time = 0
